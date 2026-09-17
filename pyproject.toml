@@ -1,0 +1,25 @@
+[project]
+name = "solid-thesis-lab"
+version = "1.0.0"
+description = "Local Solid lab: reproducible experiments on portability and consent (GDPR Art. 20, Data Act, DMA Art. 6(9))"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "requests==2.32.5",
+    "rdflib==7.1.4",
+    "python-dotenv==1.1.1",
+    "jwcrypto==1.5.6",
+    "PyJWT==2.10.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.4.2",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.setuptools.packages.find]
+include = ["solidlib*"]

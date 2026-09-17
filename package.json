@@ -1,0 +1,13 @@
+{
+  "name": "solid-thesis-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local Solid lab for thesis experiments on portability and consent (CSS pinned for reproducibility)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@solid/community-server": "7.2.0"
+  }
+}
