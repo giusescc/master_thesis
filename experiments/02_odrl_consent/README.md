@@ -127,4 +127,72 @@ https://eur-lex.europa.eu/eli/reg/2016/679/oj
 
 ## Result
 
-_Not yet run._
+_Last run: 2026-09-17 10:15 UTC._
+
+| # | Check | Expected | Actual | Advertised (`WAC-Allow`) | Result |
+|---|---|---|---|---|---|
+| 1 | Resource advertises a describedby description resource | `True` | `True` | — | **ENFORCED** |
+| 2 | ODRL policy written to the description resource (N3 PATCH) | `True` | `True` | — | **ENFORCED** |
+| 3 | Policy reads back with its purpose constraint intact | `True` | `True` | — | **ENFORCED** |
+| 4 | PUT to the description resource is refused | `True` | `True` | — | **ENFORCED** |
+| 5 | Bob reads while an ODRL Permission is in force | `200` | `200` | `user="read"` | **ENFORCED** |
+| 6 | Policy flipped from Permission to Prohibition | `True` | `True` | — | **ENFORCED** |
+| 7 | Bob reads while an ODRL Prohibition forbids it | `200` | `200` | `user="read"` | **DECLARED-ONLY** |
+| 8 | Bob redistributes despite the prohibition on distribution | `201` | `201` | — | **DECLARED-ONLY** |
+| 9 | A policy-aware client refuses the read voluntarily | `False` | `False` | — | **DECLARED-ONLY** |
+| 10 | A non-cooperating client performing the same read succeeds | `200` | `200` | — | **DECLARED-ONLY** |
+| 11 | Bob declares a contradicting DPV purpose; server accepts the request | `200` | `200` | `user="read"` | **NOT-SUPPORTED** |
+| 12 | The declared purpose is recorded anywhere server-side | `False` | `False` | — | **NOT-SUPPORTED** |
+| 13 | The policy survives an ordinary PUT to the resource | `False` | `False` | — | **NOT-SUPPORTED** |
+| 14 | The policy survives a PUT sent with Link rel="preserve" | `True` | `True` | — | **DECLARED-ONLY** |
+
+### In plain language
+
+The ODRL policy is inert. That is the result, and the experiment is built so
+that the claim can be checked rather than taken on trust.
+
+Bob read the resource while an `odrl:Permission` was in force and received
+`200`. The policy was then replaced with its exact contradiction —
+an `odrl:Prohibition` on the very same read by the very same assignee — and Bob
+received `200`. The two responses are identical. Nothing about the
+access decision consulted the policy, so flipping the policy from "may" to
+"must not" changed nothing at all. The prohibition on redistribution fared no
+better: Bob copied the data into his own pod without resistance.
+
+This is not a shortcoming of the policy's placement. It was attached to the
+resource's **description resource**, the slot the Solid Protocol itself
+designates for metadata about a resource (§4.3.2), discovered through the
+server's own `describedby` link and written with the N3 Patch mechanism the
+server advertises in `Accept-Patch`. The server stored it faithfully and served
+it back intact. It simply never reads it when deciding access — the Community
+Solid Server builds its authorization context from the target IRI, the agent's
+WebID, the client ID and the issuer, and nothing else.
+
+The policy-aware client shows what enforcement would have to look like in the
+absence of server support, and in doing so shows why that is not enforcement.
+Our client read the prohibition and declined to make the request. A client that
+simply does not implement this — including `curl`, and including our own
+ordinary session object — performed exactly the same read and got `200`.
+Compliance is therefore voluntary, evaluated by the party it constrains, and
+invisible to the data subject: nothing in the protocol lets Alice tell a
+compliant reader from a non-compliant one.
+
+Purpose has nowhere to live. Bob declared a DPV purpose on his request that
+directly contradicted the policy's constraint, using an invented header, because
+no standard header exists. The server accepted the request, ignored the header,
+and recorded the declared purpose nowhere. There is no purpose channel to
+record into. (This claim is scoped to CSS + WAC + Solid-OIDC — see
+RELATED_WORK.md, which distinguishes ecosystem approaches that genuinely enforce
+purpose from those that merely record it.)
+
+The most practically alarming result is the last one. Because the policy lives
+in the description resource, and because CSS resets a description resource
+whenever the subject resource is written, **an ordinary data update silently
+destroyed the consent policy**. The access rule in the `.acl` was untouched, so
+Bob's access continued exactly as before — only the record of the agreed terms
+vanished, with no warning to anyone. The policy survives only if the writing
+client volunteers a `Link: rel="preserve"` header, which is once again a
+protection that depends entirely on client goodwill.
+
+Raw HTTP evidence for every row above: [`evidence/transcript.md`](evidence/transcript.md)
+(and `evidence/transcript.jsonl` for machine analysis).
