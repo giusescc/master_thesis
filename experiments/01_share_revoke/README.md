@@ -81,4 +81,57 @@ https://eur-lex.europa.eu/eli/reg/2016/679/oj
 
 ## Result
 
-_Not yet run._
+_Last run: 2026-09-17 10:11 UTC._
+
+| # | Check | Expected | Actual | Advertised (`WAC-Allow`) | Result |
+|---|---|---|---|---|---|
+| 1 | Alice writes the resource | `201` | `201` | — | **ENFORCED** |
+| 2 | Alice writes an ACL granting Bob acl:Read | `True` | `True` | — | **ENFORCED** |
+| 3 | Bob reads the shared resource | `200` | `200` | `user="read"` | **ENFORCED** |
+| 4 | WAC-Allow advertises Bob's granted mode | `read` | `read` | `user="read"` | **ENFORCED** |
+| 5 | Bob saves a copy to local disk | `True` | `True` | — | **NOT-SUPPORTED** |
+| 6 | Bob writes a copy into his own pod | `201` | `201` | — | **NOT-SUPPORTED** |
+| 7 | Alice revokes by rewriting the ACL to owner-only | `True` | `True` | — | **ENFORCED** |
+| 8 | Bob re-reads with his existing, unexpired token | `403` | `403` | — | **ENFORCED** |
+| 9 | Bob re-reads with a freshly issued token | `403` | `403` | — | **ENFORCED** |
+| 10 | WAC-Allow no longer advertises read for Bob | `` | `` | `(absent)` | **ENFORCED** |
+| 11 | Bob's local copy is still readable after revocation | `True` | `True` | — | **NOT-SUPPORTED** |
+| 12 | Bob reads his own copy in his pod after revocation | `200` | `200` | `user="append control read write"` | **NOT-SUPPORTED** |
+| 13 | Alice tries to read Bob's copy in Bob's pod | `403` | `403` | — | **NOT-SUPPORTED** |
+| 14 | Alice tries to delete Bob's copy in Bob's pod | `403` | `403` | — | **NOT-SUPPORTED** |
+
+### In plain language
+
+Revocation works, and it works immediately — but only on the original resource.
+
+The immediacy is worth stating precisely, because it is a point where Solid
+behaves better than one might assume. Bob's access token was valid for a full
+hour and he still held it. Rewriting the ACL cut him off on his very next
+request, with no token refresh involved, because the Community Solid Server
+evaluates access control *per request* rather than encoding permissions into the
+token at issue time. Withdrawal is therefore effective at once, not at the next
+token expiry.
+
+Everything else in this experiment is about the limits of that guarantee. While
+authorised, Bob read the resource — and at that moment the data left the reach
+of access control entirely. His copy on local disk was untouched by revocation,
+which is unsurprising. The copy **inside his own pod** is the significant one: it
+sits on the same server, under the same protocol, governed by the same access
+control system, and Alice can neither read it (`403`) nor delete it (`403`).
+Bob's pod is Bob's, and WAC works exactly as designed in refusing her.
+
+The gap this exposes is not a defect in the Community Solid Server or in WAC.
+Web Access Control governs access to a resource at a URL. It has no vocabulary
+for a copy, no notion of onward transfer, and no way to attach an obligation
+that travels with data. Once a read succeeds, the protocol's job is finished.
+
+For the legal chapter, the technical facts are these: withdrawal is immediate
+and effective prospectively on the original; it has no effect whatsoever on
+copies already made; and the data subject has no protocol mechanism to reach a
+copy held by a recipient, even a recipient on the same server. Whether Bob
+thereby becomes a controller determining the purposes and means of processing
+under Art. 4(7), and what Art. 17 erasure could mean in this architecture, are
+questions this experiment poses rather than answers.
+
+Raw HTTP evidence for every row above: [`evidence/transcript.md`](evidence/transcript.md)
+(and `evidence/transcript.jsonl` for machine analysis).

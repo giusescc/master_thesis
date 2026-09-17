@@ -1,0 +1,120 @@
+{
+  "experiment": "01_share_revoke -- what does revocation reach?",
+  "ran_at": "2026-09-17T10:11:01.279895+00:00",
+  "checks": [
+    {
+      "name": "Alice writes the resource",
+      "expected": "201",
+      "actual": "201",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Alice writes an ACL granting Bob acl:Read",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "HTTP 201; requires acl:Control (WAC s.4.2)"
+    },
+    {
+      "name": "Bob reads the shared resource",
+      "expected": "200",
+      "actual": "200",
+      "advertised": "user=\"read\"",
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "WAC-Allow advertises Bob's granted mode",
+      "expected": "read",
+      "actual": "read",
+      "advertised": "user=\"read\"",
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Bob saves a copy to local disk",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "No mechanism in Solid or WAC can prevent a reader from copying"
+    },
+    {
+      "name": "Bob writes a copy into his own pod",
+      "expected": "201",
+      "actual": "201",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Nothing ties an obligation to the data once it is read"
+    },
+    {
+      "name": "Alice revokes by rewriting the ACL to owner-only",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "HTTP 205"
+    },
+    {
+      "name": "Bob re-reads with his existing, unexpired token",
+      "expected": "403",
+      "actual": "403",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "ACLs are evaluated per request; permissions are not baked into the token"
+    },
+    {
+      "name": "Bob re-reads with a freshly issued token",
+      "expected": "403",
+      "actual": "403",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "WAC-Allow no longer advertises read for Bob",
+      "expected": "",
+      "actual": "",
+      "advertised": "(absent)",
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Bob's local copy is still readable after revocation",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Revocation has no reach outside the server"
+    },
+    {
+      "name": "Bob reads his own copy in his pod after revocation",
+      "expected": "200",
+      "actual": "200",
+      "advertised": "user=\"append control read write\"",
+      "status": "NOT-SUPPORTED",
+      "note": ""
+    },
+    {
+      "name": "Alice tries to read Bob's copy in Bob's pod",
+      "expected": "403",
+      "actual": "403",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Same server, same protocol, her data -- no access"
+    },
+    {
+      "name": "Alice tries to delete Bob's copy in Bob's pod",
+      "expected": "403",
+      "actual": "403",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "No protocol-level erasure mechanism reaches a recipient's pod"
+    }
+  ],
+  "unexpected": 0,
+  "summary": "Revocation works, and it works immediately \u2014 but only on the original resource.\n\nThe immediacy is worth stating precisely, because it is a point where Solid\nbehaves better than one might assume. Bob's access token was valid for a full\nhour and he still held it. Rewriting the ACL cut him off on his very next\nrequest, with no token refresh involved, because the Community Solid Server\nevaluates access control *per request* rather than encoding permissions into the\ntoken at issue time. Withdrawal is therefore effective at once, not at the next\ntoken expiry.\n\nEverything else in this experiment is about the limits of that guarantee. While\nauthorised, Bob read the resource \u2014 and at that moment the data left the reach\nof access control entirely. His copy on local disk was untouched by revocation,\nwhich is unsurprising. The copy **inside his own pod** is the significant one: it\nsits on the same server, under the same protocol, governed by the same access\ncontrol system, and Alice can neither read it (`403`) nor delete it (`403`).\nBob's pod is Bob's, and WAC works exactly as designed in refusing her.\n\nThe gap this exposes is not a defect in the Community Solid Server or in WAC.\nWeb Access Control governs access to a resource at a URL. It has no vocabulary\nfor a copy, no notion of onward transfer, and no way to attach an obligation\nthat travels with data. Once a read succeeds, the protocol's job is finished.\n\nFor the legal chapter, the technical facts are these: withdrawal is immediate\nand effective prospectively on the original; it has no effect whatsoever on\ncopies already made; and the data subject has no protocol mechanism to reach a\ncopy held by a recipient, even a recipient on the same server. Whether Bob\nthereby becomes a controller determining the purposes and means of processing\nunder Art. 4(7), and what Art. 17 erasure could mean in this architecture, are\nquestions this experiment poses rather than answers."
+}
