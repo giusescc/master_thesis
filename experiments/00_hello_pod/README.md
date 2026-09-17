@@ -74,5 +74,42 @@ Every exchange is written to `evidence/transcript.md` and
 
 ## Result
 
-<!-- filled in by the run; see RESULTS.md for the cross-experiment table -->
-_Not yet run._
+_Last run: 2026-09-17 10:08 UTC._
+
+| # | Check | Expected | Actual | Advertised (`WAC-Allow`) | Result |
+|---|---|---|---|---|---|
+| 1 | Alice writes a new private resource | `201` | `201` | — | **ENFORCED** |
+| 2 | Alice reads it back | `200` | `200` | `user="append control read write"` | **ENFORCED** |
+| 3 | Bytes read match bytes written | `True` | `True` | — | **ENFORCED** |
+| 4 | WAC-Allow advertises Alice's own modes | `append control read write` | `append control read write` | `user="append control read write"` | **ENFORCED** |
+| 5 | Bob (authenticated, not granted) reads Alice's resource | `403` | `403` | — | **ENFORCED** |
+| 6 | Anonymous client reads Alice's resource | `401` | `401` | — | **ENFORCED** |
+| 7 | Anonymous client reads Alice's pod ROOT container | `200` | `200` | `user="read",public="read"` | **ENFORCED** |
+| 8 | WAC-Allow advertises the public read on the root | `read` | `read` | `user="read",public="read"` | **ENFORCED** |
+| 9 | Alice deletes her own resource | `True` | `True` | — | **ENFORCED** |
+
+### In plain language
+
+Web Access Control is genuinely enforced by the Community Solid Server. Alice
+could read and write her own resource; Bob, who is a fully authenticated Solid
+user with valid credentials, was refused with `403`; an unauthenticated client
+was refused with `401`. The distinction between the two codes is meaningful:
+`401` invites the client to authenticate, `403` tells an already-identified
+agent that identity is not the problem.
+
+The server also *advertises* its decisions through the `WAC-Allow` header, and
+the advertisement matched the enforcement in every case. That is worth stating
+explicitly, because later experiments show statements that do **not** match
+behaviour — and it is the contrast that matters.
+
+One result deserves attention beyond the access-control question. A
+freshly-created pod is not private by default: CSS's pod template grants
+`acl:Read` to `acl:agentClass foaf:Agent` on the pod's root container, so any
+anonymous client on the network can list what a new pod contains. The grant
+carries no `acl:default`, so it does not cascade to the resources inside — the
+contents stay private, only the listing is exposed. Whether a data subject
+creating a pod would anticipate that is a question for the legal analysis
+rather than one this experiment can answer.
+
+Raw HTTP evidence for every row above: [`evidence/transcript.md`](evidence/transcript.md)
+(and `evidence/transcript.jsonl` for machine analysis).
