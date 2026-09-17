@@ -21,3 +21,6 @@ node_modules/
 
 # Generated: independent WebID document served on :3002 by scripts/webid_host.py
 webid/
+
+# Generated: Bob's local copy, created by experiments/01_share_revoke
+experiments/01_share_revoke/bob_local_copy/
