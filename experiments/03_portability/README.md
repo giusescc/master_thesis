@@ -56,9 +56,18 @@ a legal statement about this repository.
 
 ### Moving the data
 
+> **Amendment, recorded before the run.** Check 1 originally predicted a literal
+> count of `9`. That was an arithmetic slip about this experiment's own fixture
+> (which creates 7 documents plus 4 containers), not a claim about Solid. Rather
+> than let a miscount surface as a spurious `UNEXPECTED`, the check was changed
+> *before running* to the more meaningful form: does traversal reveal **every
+> resource that was actually created**? The amendment is noted here and in the
+> commit history rather than made silently.
+
+
 | # | Check | Expected | Meaning if it holds |
 |---|---|---|---|
-| 1 | Traversal via `ldp:contains` finds every contained resource | `9` | Enumeration works — **ENFORCED** |
+| 1 | Traversal via `ldp:contains` finds every resource that was created | `True` | Enumeration works — **ENFORCED** |
 | 2 | That traversal also reveals the container's `.acl` | `False` | Auxiliary resources are invisible to a naive export — **NOT-SUPPORTED** |
 | 3 | Every resource is recreated on provider B | `True` | The bytes move — **ENFORCED** |
 | 4 | The binary's content type survives | `image/png` | Media types move — **ENFORCED** |
