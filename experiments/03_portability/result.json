@@ -1,6 +1,6 @@
 {
   "experiment": "03_portability -- what survives a move?",
-  "ran_at": "2026-09-17T10:24:04.510674+00:00",
+  "ran_at": "2026-09-17T10:25:36.033438+00:00",
   "checks": [
     {
       "name": "Traversal finds every resource that was created",

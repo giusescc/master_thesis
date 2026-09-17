@@ -124,7 +124,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641253-text/turtle"`
+- **ETag:** `"1789640731695-text/turtle"`
 
 ## 20. Alice@A: PUT http://localhost:3000/alice/thesis-lab/.acl
 
@@ -139,7 +139,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641323-text/turtle"`
+- **ETag:** `"1789640731761-text/turtle"`
 
 ## 22. Alice@A: GET http://localhost:3000/alice/thesis-lab/notes/
 
@@ -148,7 +148,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/notes/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fnotes%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/notes/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641284-text/turtle"`
+- **ETag:** `"1789640731729-text/turtle"`
 
 ## 23. Alice@A: GET http://localhost:3000/alice/thesis-lab/media/
 
@@ -157,7 +157,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/media/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fmedia%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/media/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641301-text/turtle"`
+- **ETag:** `"1789640731744-text/turtle"`
 
 ## 24. Alice@A: GET http://localhost:3000/alice/thesis-lab/contacts/
 
@@ -166,7 +166,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/contacts/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fcontacts%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/contacts/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641269-text/turtle"`
+- **ETag:** `"1789640731710-text/turtle"`
 
 ## 25. Alice@A: GET http://localhost:3000/alice/thesis-lab/contacts/carol.ttl
 
@@ -176,7 +176,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/contacts/carol.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fcontacts%2Fcarol.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/contacts/carol.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641261-text/turtle"`
+- **ETag:** `"1789640731703-text/turtle"`
 
 ## 26. Alice@A: GET http://localhost:3000/alice/thesis-lab/contacts/dave.ttl
 
@@ -186,7 +186,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/contacts/dave.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fcontacts%2Fdave.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/contacts/dave.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641269-text/turtle"`
+- **ETag:** `"1789640731710-text/turtle"`
 
 ## 27. Alice@A: GET http://localhost:3000/alice/thesis-lab/media/portrait.png
 
@@ -196,7 +196,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `image/png`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/media/portrait.png.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fmedia%2Fportrait.png>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/media/portrait.png.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641301-image/png"`
+- **ETag:** `"1789640731745-image/png"`
 
 ## 28. Alice@A: GET http://localhost:3000/alice/thesis-lab/media/portrait.ttl
 
@@ -206,7 +206,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/media/portrait.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fmedia%2Fportrait.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/media/portrait.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641292-text/turtle"`
+- **ETag:** `"1789640731736-text/turtle"`
 
 ## 29. Alice@A: GET http://localhost:3000/alice/thesis-lab/notes/note-1.ttl
 
@@ -216,7 +216,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641276-text/turtle"`
+- **ETag:** `"1789640731717-text/turtle"`
 
 ## 30. Alice@A: GET http://localhost:3000/alice/thesis-lab/notes/note-2.ttl
 
@@ -226,7 +226,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/notes/note-2.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fnotes%2Fnote-2.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/notes/note-2.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641284-text/turtle"`
+- **ETag:** `"1789640731729-text/turtle"`
 
 ## 31. Alice@A: GET http://localhost:3000/alice/thesis-lab/profile.ttl
 
@@ -236,7 +236,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/profile.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fprofile.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/profile.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641253-text/turtle"`
+- **ETag:** `"1789640731695-text/turtle"`
 
 ## 32. Alice2@B: PUT http://localhost:3001/alice2/migrated-verbatim/
 
@@ -378,7 +378,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/contacts/carol.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fcontacts%2Fcarol.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/contacts/carol.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641425-text/turtle"`
+- **ETag:** `"1789640731870-text/turtle"`
 
 ## 55. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/contacts/dave.ttl
 
@@ -388,7 +388,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/contacts/dave.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fcontacts%2Fdave.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/contacts/dave.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641430-text/turtle"`
+- **ETag:** `"1789640731877-text/turtle"`
 
 ## 56. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/media/portrait.png
 
@@ -398,7 +398,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `image/png`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.png.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fmedia%2Fportrait.png>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.png.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641441-image/png"`
+- **ETag:** `"1789640731889-image/png"`
 
 ## 57. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/media/portrait.ttl
 
@@ -408,7 +408,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fmedia%2Fportrait.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641446-text/turtle"`
+- **ETag:** `"1789640731896-text/turtle"`
 
 ## 58. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl
 
@@ -418,7 +418,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641462-text/turtle"`
+- **ETag:** `"1789640731906-text/turtle"`
 
 ## 59. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/notes/note-2.ttl
 
@@ -428,7 +428,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-2.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-2.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-2.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641468-text/turtle"`
+- **ETag:** `"1789640731913-text/turtle"`
 
 ## 60. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/profile.ttl
 
@@ -438,7 +438,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/profile.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fprofile.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/profile.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641474-text/turtle"`
+- **ETag:** `"1789640731920-text/turtle"`
 
 ## 61. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/media/portrait.png
 
@@ -448,7 +448,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `image/png`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.png.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fmedia%2Fportrait.png>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.png.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641441-image/png"`
+- **ETag:** `"1789640731889-image/png"`
 
 ## 62. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/media/portrait.ttl
 
@@ -458,7 +458,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fmedia%2Fportrait.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/media/portrait.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641446-text/turtle"`
+- **ETag:** `"1789640731896-text/turtle"`
 
 ## 63. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl
 
@@ -468,7 +468,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641462-text/turtle"`
+- **ETag:** `"1789640731906-text/turtle"`
 
 ## 64. Alice2@B: GET http://localhost:3001/alice2/migrated-rewritten/notes/note-1.ttl
 
@@ -478,7 +478,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641524-text/turtle"`
+- **ETag:** `"1789640731973-text/turtle"`
 
 ## 65. Alice2@B: GET http://localhost:3001/alice2/migrated-rewritten/contacts/carol.ttl
 
@@ -488,7 +488,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/contacts/carol.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2Fcontacts%2Fcarol.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/contacts/carol.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641491-text/turtle"`
+- **ETag:** `"1789640731937-text/turtle"`
 
 ## 66. Alice2@B: HEAD http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl
 
@@ -498,7 +498,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641462-text/turtle"`
+- **ETag:** `"1789640731906-text/turtle"`
 
 ## 67. Alice2@B: PUT http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl
 
@@ -516,7 +516,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641462-text/turtle"`
+- **ETag:** `"1789640731906-text/turtle"`
 
 ## 69. Alice2@B: HEAD http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl
 
@@ -526,7 +526,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641462-text/turtle"`
+- **ETag:** `"1789640731906-text/turtle"`
 
 ## 70. Alice2@B: PATCH http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta
 
@@ -540,7 +540,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641649-text/turtle"`
+- **ETag:** `"1789640732132-text/turtle"`
 
 ## 72. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta
 
@@ -561,7 +561,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641649-text/turtle"`
+- **ETag:** `"1789640732132-text/turtle"`
 
 ## 74. Alice2@B: PATCH http://localhost:3001/alice2/profile/card
 
@@ -607,7 +607,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/independent-probe.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Findependent-probe.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/independent-probe.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640642026-text/turtle"`
+- **ETag:** `"1789640732479-text/turtle"`
 
 ## 81. Alice2@B: PUT http://localhost:3001/alice2/independent-probe.ttl.acl
 
@@ -625,7 +625,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/independent-probe.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Findependent-probe.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/independent-probe.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640642026-text/turtle"`
+- **ETag:** `"1789640732479-text/turtle"`
 
 ## 83. Alice@A: GET http://localhost:3000/alice/thesis-lab/
 
@@ -634,7 +634,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641323-text/turtle"`
+- **ETag:** `"1789640731761-text/turtle"`
 
 ## 84. Alice@A: GET http://localhost:3000/alice/thesis-lab/notes/
 
@@ -643,7 +643,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/notes/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fnotes%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/notes/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641284-text/turtle"`
+- **ETag:** `"1789640731729-text/turtle"`
 
 ## 85. Alice@A: GET http://localhost:3000/alice/thesis-lab/media/
 
@@ -652,7 +652,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/media/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fmedia%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/media/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641301-text/turtle"`
+- **ETag:** `"1789640731744-text/turtle"`
 
 ## 86. Alice@A: GET http://localhost:3000/alice/thesis-lab/contacts/
 
@@ -661,7 +661,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/thesis-lab/contacts/.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fthesis-lab%2Fcontacts%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/thesis-lab/contacts/.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641269-text/turtle"`
+- **ETag:** `"1789640731710-text/turtle"`
 
 ## 87. Alice@A: DELETE http://localhost:3000/alice/thesis-lab/contacts/carol.ttl
 
@@ -715,7 +715,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2Fnote-1.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/note-1.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641649-text/turtle"`
+- **ETag:** `"1789640732132-text/turtle"`
 
 ## 99. Alice@A: GET http://localhost:3000/alice/thesis-lab/contacts/carol.ttl
 
@@ -735,7 +735,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/contacts/carol.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2Fcontacts%2Fcarol.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/contacts/carol.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641491-text/turtle"`
+- **ETag:** `"1789640731937-text/turtle"`
 
 ## 101. Alice-independent: GET http://localhost:3001/alice2/independent-probe.ttl
 
@@ -745,7 +745,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/independent-probe.ttl.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Findependent-probe.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/independent-probe.ttl.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640642026-text/turtle"`
+- **ETag:** `"1789640732479-text/turtle"`
 
 ## 102. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/
 
@@ -754,7 +754,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641474-text/turtle"`
+- **ETag:** `"1789640731919-text/turtle"`
 
 ## 103. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/notes/
 
@@ -763,7 +763,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/notes/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fnotes%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/notes/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641649-text/turtle"`
+- **ETag:** `"1789640732132-text/turtle"`
 
 ## 104. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/media/
 
@@ -772,7 +772,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/media/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fmedia%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/media/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641446-text/turtle"`
+- **ETag:** `"1789640731895-text/turtle"`
 
 ## 105. Alice2@B: GET http://localhost:3001/alice2/migrated-verbatim/contacts/
 
@@ -781,7 +781,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-verbatim/contacts/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-verbatim%2Fcontacts%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-verbatim/contacts/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641430-text/turtle"`
+- **ETag:** `"1789640731877-text/turtle"`
 
 ## 106. Alice2@B: DELETE http://localhost:3001/alice2/migrated-verbatim/contacts/carol.ttl
 
@@ -834,7 +834,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641535-text/turtle"`
+- **ETag:** `"1789640731985-text/turtle"`
 
 ## 118. Alice2@B: GET http://localhost:3001/alice2/migrated-rewritten/notes/
 
@@ -843,7 +843,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/notes/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2Fnotes%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/notes/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641530-text/turtle"`
+- **ETag:** `"1789640731980-text/turtle"`
 
 ## 119. Alice2@B: GET http://localhost:3001/alice2/migrated-rewritten/media/
 
@@ -852,7 +852,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/media/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2Fmedia%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/media/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641514-text/turtle"`
+- **ETag:** `"1789640731961-text/turtle"`
 
 ## 120. Alice2@B: GET http://localhost:3001/alice2/migrated-rewritten/contacts/
 
@@ -861,7 +861,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Allow:** `OPTIONS, HEAD, GET, POST`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Container>; rel="type", <http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3001/alice2/migrated-rewritten/contacts/.meta>; rel="describedby", <http://localhost:3001/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3001%2Falice2%2Fmigrated-rewritten%2Fcontacts%2F>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3001/alice2/migrated-rewritten/contacts/.acl>; rel="acl", <http://localhost:3001/alice2/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640641497-text/turtle"`
+- **ETag:** `"1789640731944-text/turtle"`
 
 ## 121. Alice2@B: DELETE http://localhost:3001/alice2/migrated-rewritten/contacts/carol.ttl
 

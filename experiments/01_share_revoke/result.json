@@ -1,6 +1,6 @@
 {
   "experiment": "01_share_revoke -- what does revocation reach?",
-  "ran_at": "2026-09-17T10:11:01.279895+00:00",
+  "ran_at": "2026-09-17T10:25:11.491715+00:00",
   "checks": [
     {
       "name": "Alice writes the resource",

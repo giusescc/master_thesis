@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <title>The ODRL policy is inert (experiment 02)</title>
+  <rect width="760" height="330" fill="none"/>
+  <text x="16" y="26" font-size="15" font-weight="700" fill="#0f172a">Experiment 02 — flipping the policy to its exact contradiction changed nothing</text>
+  <text x="16" y="46" font-size="12" fill="#475569">Same resource, same reader, same WAC rule. Only the ODRL policy differs between the two panels.</text>
+
+  <!-- left panel -->
+  <rect x="20" y="66" width="345" height="180" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="34" y="88" font-size="12" font-weight="700" fill="#0f172a">Policy says: odrl:Permission</text>
+  <rect x="34" y="98" width="317" height="66" rx="5" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="44" y="116" font-size="10" font-family="monospace" fill="#334155">odrl:permission [ odrl:action odrl:read ;</text>
+  <text x="44" y="131" font-size="10" font-family="monospace" fill="#334155">  odrl:constraint [ odrl:leftOperand odrl:purpose ;</text>
+  <text x="44" y="146" font-size="10" font-family="monospace" fill="#334155">  odrl:rightOperand dpv:ScientificResearch ] ]</text>
+  <text x="34" y="190" font-size="12" fill="#475569">Bob requests the resource</text>
+  <rect x="34" y="200" width="120" height="32" rx="5" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="60" y="221" font-size="14" font-weight="700" fill="#065f46">200 OK</text>
+
+  <!-- right panel -->
+  <rect x="395" y="66" width="345" height="180" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="409" y="88" font-size="12" font-weight="700" fill="#7c2d12">Policy says: odrl:Prohibition</text>
+  <rect x="409" y="98" width="317" height="66" rx="5" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="419" y="116" font-size="10" font-family="monospace" fill="#334155">odrl:prohibition [</text>
+  <text x="419" y="131" font-size="10" font-family="monospace" fill="#334155">  odrl:target &lt;research-dataset.ttl&gt; ;</text>
+  <text x="419" y="146" font-size="10" font-family="monospace" fill="#334155">  odrl:action odrl:read ]</text>
+  <text x="409" y="190" font-size="12" fill="#475569">Bob requests the resource</text>
+  <rect x="409" y="200" width="120" height="32" rx="5" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="435" y="221" font-size="14" font-weight="700" fill="#065f46">200 OK</text>
+  <text x="545" y="221" font-size="12" font-weight="700" fill="#b45309">← identical</text>
+
+  <rect x="20" y="258" width="720" height="56" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="34" y="278" font-size="12" font-weight="700" fill="#7c2d12">DECLARED-ONLY.</text>
+  <text x="140" y="278" font-size="12" fill="#7c2d12">The policy sat in the slot the Solid Protocol designates for it (§4.3.2 description resource),</text>
+  <text x="34" y="298" font-size="12" fill="#7c2d12">was stored faithfully and served back intact — and was never consulted. An ordinary PUT to the resource then destroyed it silently.</text>
+</svg>

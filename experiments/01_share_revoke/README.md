@@ -81,7 +81,7 @@ https://eur-lex.europa.eu/eli/reg/2016/679/oj
 
 ## Result
 
-_Last run: 2026-09-17 10:11 UTC._
+_Last run: 2026-09-17 10:25 UTC._
 
 | # | Check | Expected | Actual | Advertised (`WAC-Allow`) | Result |
 |---|---|---|---|---|---|

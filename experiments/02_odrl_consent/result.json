@@ -1,6 +1,6 @@
 {
   "experiment": "02_odrl_consent -- enforced, or only declared?",
-  "ran_at": "2026-09-17T10:15:01.177322+00:00",
+  "ran_at": "2026-09-17T10:25:11.762433+00:00",
   "checks": [
     {
       "name": "Resource advertises a describedby description resource",

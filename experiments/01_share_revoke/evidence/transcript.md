@@ -17,7 +17,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/shared-note.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fshared-note.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/shared-note.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789639861195-text/turtle"`
+- **ETag:** `"1789640711385-text/turtle"`
 
 ## 3. Alice: PUT http://localhost:3000/alice/shared-note.ttl.acl
 
@@ -35,7 +35,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/shared-note.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fshared-note.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/shared-note.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789639861195-text/turtle"`
+- **ETag:** `"1789640711385-text/turtle"`
 
 ## 5. Bob: PUT http://localhost:3000/bob/copy-of-alices-note.ttl
 
@@ -53,7 +53,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/shared-note.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fshared-note.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/shared-note.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789639861195-text/turtle"`
+- **ETag:** `"1789640711385-text/turtle"`
 
 ## 7. Alice: PUT http://localhost:3000/alice/shared-note.ttl.acl
 
@@ -85,7 +85,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/bob/copy-of-alices-note.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Fbob%2Fcopy-of-alices-note.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/bob/copy-of-alices-note.ttl.acl>; rel="acl", <http://localhost:3000/bob/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789639861228-text/turtle"`
+- **ETag:** `"1789640711434-text/turtle"`
 
 ## 11. Alice: GET http://localhost:3000/bob/copy-of-alices-note.ttl
 

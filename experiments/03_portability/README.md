@@ -184,7 +184,7 @@ All quoted phrases above are to be verified against the Official Journal text.
 
 ## Result
 
-_Last run: 2026-09-17 10:24 UTC._
+_Last run: 2026-09-17 10:25 UTC._
 
 | # | Check | Expected | Actual | Advertised (`WAC-Allow`) | Result |
 |---|---|---|---|---|---|

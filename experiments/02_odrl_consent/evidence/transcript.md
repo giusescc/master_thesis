@@ -17,7 +17,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101038-text/turtle"`
+- **ETag:** `"1789640711596-text/turtle"`
 
 ## 3. Alice: PUT http://localhost:3000/alice/research-dataset.ttl.acl
 
@@ -33,7 +33,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101038-text/turtle"`
+- **ETag:** `"1789640711596-text/turtle"`
 
 ## 5. Alice: PATCH http://localhost:3000/alice/research-dataset.ttl.meta
 
@@ -47,7 +47,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101060-text/turtle"`
+- **ETag:** `"1789640711625-text/turtle"`
 
 ## 7. Alice: GET http://localhost:3000/alice/research-dataset.ttl.meta
 
@@ -78,7 +78,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101060-text/turtle"`
+- **ETag:** `"1789640711625-text/turtle"`
 
 ## 10. Alice: PATCH http://localhost:3000/alice/research-dataset.ttl.meta
 
@@ -94,7 +94,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101093-text/turtle"`
+- **ETag:** `"1789640711658-text/turtle"`
 
 ## 12. Bob: PUT http://localhost:3000/bob/redistributed-dataset.ttl
 
@@ -112,7 +112,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101093-text/turtle"`
+- **ETag:** `"1789640711658-text/turtle"`
 
 ## 14. Bob: GET http://localhost:3000/alice/research-dataset.ttl.meta
 
@@ -133,7 +133,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101093-text/turtle"`
+- **ETag:** `"1789640711658-text/turtle"`
 
 ## 16. Bob: GET http://localhost:3000/alice/research-dataset.ttl
 
@@ -145,7 +145,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101093-text/turtle"`
+- **ETag:** `"1789640711658-text/turtle"`
 
 ## 17. Alice: HEAD http://localhost:3000/alice/research-dataset.ttl
 
@@ -155,7 +155,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101093-text/turtle"`
+- **ETag:** `"1789640711658-text/turtle"`
 
 ## 18. Alice: GET http://localhost:3000/alice/research-dataset.ttl.meta
 
@@ -180,7 +180,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101137-text/turtle"`
+- **ETag:** `"1789640711707-text/turtle"`
 
 ## 21. Alice: GET http://localhost:3000/alice/research-dataset.ttl.meta
 
@@ -203,7 +203,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101150-text/turtle"`
+- **ETag:** `"1789640711724-text/turtle"`
 
 ## 24. Alice: PUT http://localhost:3000/alice/research-dataset.ttl
 
@@ -217,7 +217,7 @@ Authorization and DPoP headers are redacted; they are secrets.
 - **Accept-Patch:** `text/n3, application/sparql-update`
 - **Content-Type:** `text/turtle`
 - **Link:** `<http://www.w3.org/ns/ldp#Resource>; rel="type", <http://localhost:3000/alice/research-dataset.ttl.meta>; rel="describedby", <http://localhost:3000/.notifications/StreamingHTTPChannel2023/http%3A%2F%2Flocalhost%3A3000%2Falice%2Fresearch-dataset.ttl>; rel="http://www.w3.org/ns/solid/terms#updatesViaStreamingHttp2023", <http://localhost:3000/alice/research-dataset.ttl.acl>; rel="acl", <http://localhost:3000/alice/.well-known/solid>; rel="http://www.w3.org/ns/solid/terms#storageDescription"`
-- **ETag:** `"1789640101159-text/turtle"`
+- **ETag:** `"1789640711735-text/turtle"`
 
 ## 26. Alice: GET http://localhost:3000/alice/research-dataset.ttl.meta
 

@@ -74,7 +74,7 @@ Every exchange is written to `evidence/transcript.md` and
 
 ## Result
 
-_Last run: 2026-09-17 10:08 UTC._
+_Last run: 2026-09-17 10:25 UTC._
 
 | # | Check | Expected | Actual | Advertised (`WAC-Allow`) | Result |
 |---|---|---|---|---|---|
