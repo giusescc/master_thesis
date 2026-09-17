@@ -1,0 +1,80 @@
+{
+  "experiment": "00_hello_pod -- is WAC enforced?",
+  "ran_at": "2026-09-17T10:25:11.281538+00:00",
+  "checks": [
+    {
+      "name": "Alice writes a new private resource",
+      "expected": "201",
+      "actual": "201",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "Owner holds acl:Write on her own pod (WAC s.4.2)"
+    },
+    {
+      "name": "Alice reads it back",
+      "expected": "200",
+      "actual": "200",
+      "advertised": "user=\"append control read write\"",
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Bytes read match bytes written",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "WAC-Allow advertises Alice's own modes",
+      "expected": "append control read write",
+      "actual": "append control read write",
+      "advertised": "user=\"append control read write\"",
+      "status": "ENFORCED",
+      "note": "The server advertising the permissions it will apply (WAC s.6.1)"
+    },
+    {
+      "name": "Bob (authenticated, not granted) reads Alice's resource",
+      "expected": "403",
+      "actual": "403",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "Authentication is not authorisation"
+    },
+    {
+      "name": "Anonymous client reads Alice's resource",
+      "expected": "401",
+      "actual": "401",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Anonymous client reads Alice's pod ROOT container",
+      "expected": "200",
+      "actual": "200",
+      "advertised": "user=\"read\",public=\"read\"",
+      "status": "ENFORCED",
+      "note": "CSS default pod template grants acl:Read to acl:agentClass foaf:Agent"
+    },
+    {
+      "name": "WAC-Allow advertises the public read on the root",
+      "expected": "read",
+      "actual": "read",
+      "advertised": "user=\"read\",public=\"read\"",
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Alice deletes her own resource",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "HTTP 205; also makes the run repeatable"
+    }
+  ],
+  "unexpected": 0,
+  "summary": "Web Access Control is genuinely enforced by the Community Solid Server. Alice\ncould read and write her own resource; Bob, who is a fully authenticated Solid\nuser with valid credentials, was refused with `403`; an unauthenticated client\nwas refused with `401`. The distinction between the two codes is meaningful:\n`401` invites the client to authenticate, `403` tells an already-identified\nagent that identity is not the problem.\n\nThe server also *advertises* its decisions through the `WAC-Allow` header, and\nthe advertisement matched the enforcement in every case. That is worth stating\nexplicitly, because later experiments show statements that do **not** match\nbehaviour \u2014 and it is the contrast that matters.\n\nOne result deserves attention beyond the access-control question. A\nfreshly-created pod is not private by default: CSS's pod template grants\n`acl:Read` to `acl:agentClass foaf:Agent` on the pod's root container, so any\nanonymous client on the network can list what a new pod contains. The grant\ncarries no `acl:default`, so it does not cascade to the resources inside \u2014 the\ncontents stay private, only the listing is exposed. Whether a data subject\ncreating a pod would anticipate that is a question for the legal analysis\nrather than one this experiment can answer."
+}

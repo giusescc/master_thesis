@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="760" height="340" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <title>What revocation reaches, and what it does not (experiment 01)</title>
+  <defs>
+    <marker id="arw" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="760" height="340" fill="none"/>
+  <text x="16" y="26" font-size="15" font-weight="700" fill="#0f172a">Experiment 01 — revocation is immediate, but reaches only the original</text>
+  <text x="16" y="46" font-size="12" fill="#475569">Observed against Community Solid Server 7.2.0. Status codes are actual responses.</text>
+
+  <!-- Alice pod -->
+  <rect x="20" y="70" width="210" height="110" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="34" y="92" font-size="12" font-weight="700" fill="#0f172a">Alice's pod (provider A)</text>
+  <rect x="34" y="104" width="182" height="30" rx="5" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="44" y="123" font-size="11" fill="#0f172a">shared-note.ttl</text>
+  <text x="34" y="154" font-size="11" fill="#475569">.acl: Bob acl:Read</text>
+  <text x="34" y="170" font-size="11" fill="#b91c1c">→ revoked by Alice</text>
+
+  <!-- arrow read -->
+  <line x1="232" y1="118" x2="300" y2="118" stroke="#64748b" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="238" y="110" font-size="10" fill="#15803d">read 200</text>
+
+  <!-- Bob -->
+  <rect x="305" y="70" width="150" height="110" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="318" y="92" font-size="12" font-weight="700" fill="#0f172a">Bob</text>
+  <text x="318" y="112" font-size="11" fill="#475569">reads while granted</text>
+  <text x="318" y="132" font-size="11" fill="#475569">then copies, twice</text>
+  <text x="318" y="160" font-size="11" fill="#b91c1c">after revoke: 403</text>
+
+  <!-- copies -->
+  <line x1="380" y1="182" x2="380" y2="212" stroke="#64748b" stroke-width="1.5" marker-end="url(#arw)"/>
+  <rect x="245" y="216" width="200" height="72" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="258" y="238" font-size="12" font-weight="700" fill="#7c2d12">Copy on Bob's disk</text>
+  <text x="258" y="257" font-size="11" fill="#7c2d12">unaffected by revocation</text>
+  <text x="258" y="275" font-size="11" fill="#7c2d12">NOT-SUPPORTED</text>
+
+  <line x1="430" y1="182" x2="560" y2="214" stroke="#64748b" stroke-width="1.5" marker-end="url(#arw)"/>
+  <rect x="470" y="216" width="270" height="72" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="484" y="238" font-size="12" font-weight="700" fill="#7c2d12">Copy inside Bob's own pod</text>
+  <text x="484" y="257" font-size="11" fill="#7c2d12">Alice GET → 403 · Alice DELETE → 403</text>
+  <text x="484" y="275" font-size="11" fill="#7c2d12">same server, same protocol, out of reach</text>
+
+
+  <!-- verdict box -->
+  <rect x="470" y="70" width="270" height="110" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="484" y="92" font-size="12" font-weight="700" fill="#065f46">What IS enforced</text>
+  <text x="484" y="112" font-size="11" fill="#065f46">Revocation takes effect immediately:</text>
+  <text x="484" y="130" font-size="11" fill="#065f46">Bob's unexpired token (valid 3600 s)</text>
+  <text x="484" y="148" font-size="11" fill="#065f46">stopped working on the next request.</text>
+  <text x="484" y="168" font-size="11" fill="#065f46">ACLs are evaluated per request.</text>
+
+  <text x="16" y="320" font-size="11" fill="#475569">WAC governs access to a resource at a URL. It has no vocabulary for a copy, no notion of onward transfer, and no obligation that travels with data.</text>
+</svg>

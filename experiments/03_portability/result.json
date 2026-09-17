@@ -1,0 +1,208 @@
+{
+  "experiment": "03_portability -- what survives a move?",
+  "ran_at": "2026-09-17T10:25:36.033438+00:00",
+  "checks": [
+    {
+      "name": "Traversal finds every resource that was created",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "11 resources via ldp:contains (Solid Protocol s.4.2)"
+    },
+    {
+      "name": "That traversal also reveals the container's .acl",
+      "expected": "False",
+      "actual": "False",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Auxiliary resources are not contained resources; a naive export misses them"
+    },
+    {
+      "name": "Every resource is recreated on provider B",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "The binary's content type survives",
+      "expected": "image/png",
+      "actual": "image/png",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "The binary is byte-identical (SHA-256)",
+      "expected": "ee57e9e93a8ed97e1432bccc16c2df78fa516bf5faf29c59a9cc3eadf9c3a450",
+      "actual": "ee57e9e93a8ed97e1432bccc16c2df78fa516bf5faf29c59a9cc3eadf9c3a450",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "The image's licence metadata survives",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "The licence is content being migrated -- part of the test scenario"
+    },
+    {
+      "name": "After verbatim copy, internal links still name provider A",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Bytes moved; the references still point at the pod she left"
+    },
+    {
+      "name": "Rewriting links requires a bespoke client-side step",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "No protocol mechanism rewrites IRIs; this experiment had to implement it"
+    },
+    {
+      "name": "After rewriting, internal links resolve on provider B",
+      "expected": "200",
+      "actual": "200",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "The custom container ACL is carried over by the migration",
+      "expected": "False",
+      "actual": "False",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "ACLs are invisible to the containment model, so they simply do not travel"
+    },
+    {
+      "name": "The ACL can be explicitly written on provider B",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "HTTP 201"
+    },
+    {
+      "name": "Bob, whose WebID is hosted by provider A, reads on provider B",
+      "expected": "200",
+      "actual": "200",
+      "advertised": "user=\"read\"",
+      "status": "ENFORCED",
+      "note": "Solid-OIDC is genuinely cross-provider -- while provider A is running"
+    },
+    {
+      "name": "The ODRL policy can be re-attached on provider B",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "HTTP 205"
+    },
+    {
+      "name": "The policy is still inert on provider B",
+      "expected": "200",
+      "actual": "200",
+      "advertised": null,
+      "status": "DECLARED-ONLY",
+      "note": "Inertness is a property of the stack, not of one server instance"
+    },
+    {
+      "name": "owl:sameAs linking new WebID to old is accepted as data",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "HTTP 205; it can be said"
+    },
+    {
+      "name": "An ACL naming Alice's old WebID grants access to her new identity",
+      "expected": "403",
+      "actual": "403",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Nothing in WAC or CSS honours owl:sameAs"
+    },
+    {
+      "name": "A redirect or tombstone can be left at the old WebID",
+      "expected": "False",
+      "actual": "False",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Old WebID returns HTTP 200; CSS offers no way to forward an identity"
+    },
+    {
+      "name": "A provider-independent WebID can be linked to the account",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "Requires satisfying CSS's ownership-proof challenge"
+    },
+    {
+      "name": "The independent identity can access provider B",
+      "expected": "200",
+      "actual": "200",
+      "advertised": "user=\"read\"",
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "Switching storage changes only pim:storage; the WebID is unchanged",
+      "expected": "True",
+      "actual": "True",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "The identifier survives the move because it never belonged to a pod"
+    },
+    {
+      "name": "After Alice's data is deleted from A, a stranger following a verbatim link gets",
+      "expected": "401",
+      "actual": "401",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Predicted 404; CSS returns 401 rather than disclose existence. Link dead either way"
+    },
+    {
+      "name": "...while the owner asking for the same URL gets",
+      "expected": "404",
+      "actual": "404",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "CSS distinguishes 'gone' from 'forbidden' by who is asking"
+    },
+    {
+      "name": "The rewritten copy's links still resolve",
+      "expected": "200",
+      "actual": "200",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": ""
+    },
+    {
+      "name": "With provider A stopped, Bob can still authenticate to provider B",
+      "expected": "False",
+      "actual": "False",
+      "advertised": null,
+      "status": "NOT-SUPPORTED",
+      "note": "Bob's WebID and issuer both lived on provider A"
+    },
+    {
+      "name": "With provider A stopped, the independent identity still authenticates",
+      "expected": "200",
+      "actual": "200",
+      "advertised": null,
+      "status": "ENFORCED",
+      "note": "Its WebID is on a third origin and its issuer is provider B"
+    }
+  ],
+  "unexpected": 0,
+  "summary": "The bytes move. Almost nothing else does.\n\nEvery document and the binary arrived on provider B intact \u2014 same media type,\nbyte-identical SHA-256, licence metadata preserved. Judged purely as \"can the\ndata be obtained in a structured, commonly used, machine-readable format\", Solid\ndoes well: it is RDF over HTTP, and a generic client walked the whole pod\nthrough `ldp:contains` without knowing anything about its contents.\n\nThe trouble starts with everything *around* the data.\n\n**Links.** Copied verbatim, the internal references still name\n`http://localhost:3000/alice/thesis-lab/` \u2014 the pod Alice has just left. Her notes still point at her old\ncontacts, her old photo. The dataset is intact and simultaneously wrong. The\nalternative, rewriting every IRI, works \u2014 but there is no protocol mechanism for\nit; this experiment had to implement the rewriting itself, and doing so silently\nmutates the data subject's records and strands anyone who had linked to the old\nIRIs.\n\n**Access rules did not travel at all.** The custom ACL on Alice's container is\nan auxiliary resource, not a contained one, so `ldp:contains` traversal never\nrevealed it. A conscientious \"download my pod\" client would not even know it\nexisted. The permissions Alice had configured simply ceased to exist at the\ndestination, silently, with the data arriving intact around them.\n\n**Identity is the deepest problem, and it has a clear answer.** Alice's WebID\nwas `http://localhost:3000/alice/profile/card#me` \u2014 an identifier owned by the provider she is leaving. She\ncan *say* her new identity is `owl:sameAs` the old one, and the server stores\nthat statement happily, but nothing honours it: a grant made to her old WebID\ngave her new identity `403`. Nor can she leave a forwarding address, because\nthere is no mechanism to redirect a WebID.\n\nThe comparison at the end is the point of the whole experiment. With provider A\nswitched off, Bob \u2014 whose WebID and issuer both lived on provider A \u2014 could not\nauthenticate **anywhere**, including to resources on provider B that were\nexplicitly granted to him. His identity did not merely lose its data; it ceased\nto exist when his provider did. The independent identity, whose WebID sits on a\nthird origin and whose issuer is provider B, kept working.\n\nThat contrast suggests the portability problem in Solid is not mainly about\nmoving files. Moving files is the part that works. What does not move is the\nweb of references, the access rules, and above all the identifier \u2014 and an\nidentifier hosted by the provider you are trying to leave is not portable at\nall. Whether \"without hindrance\" in Art. 20, or switching under Data Act\nChapter VI, is satisfied by an architecture with these properties is a legal\nquestion this experiment poses rather than answers."
+}
