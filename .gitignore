@@ -18,3 +18,6 @@ node_modules/
 
 # --- macOS ---
 .DS_Store
+
+# Generated: independent WebID document served on :3002 by scripts/webid_host.py
+webid/
