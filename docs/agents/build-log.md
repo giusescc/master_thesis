@@ -3,7 +3,7 @@
 Newest first. One short entry per Slice: what was built, why, where, and the decisions to respect.
 
 ## 2026-09-22: Chapter 2 export (Legionary export, branch worktree-export)
-- **What:** `export/` is git-ignored. `export/ch2/` in the main checkout holds unmodified copies of `RESULTS.md`, the four experiment READMEs (as `CH2_exp00_README.md` … `CH2_exp03_README.md`) and `experiments/02_odrl_consent/RELATED_WORK.md`.
+- **What:** `export/` is git-ignored. `export/ch2/` in the main checkout holds unmodified copies (destination ← source; no README amended): `RESULTS.md` ← `RESULTS.md`; `CH2_exp00_README.md` ← `experiments/00_hello_pod/README.md`; `CH2_exp01_README.md` ← `experiments/01_share_revoke/README.md`; `CH2_exp02_README.md` ← `experiments/02_odrl_consent/README.md`; `CH2_exp03_README.md` ← `experiments/03_portability/README.md`; `RELATED_WORK.md` ← `experiments/02_odrl_consent/RELATED_WORK.md`.
 - **Why:** Giuseppe needs the evidence write-ups next to his thesis Chapter 2 draft without committing duplicates.
 - **Where:** `.gitignore` (the `export/` rule). The copies are local only and never committed.
 - **Decisions:** No README was amended. All four already had their pre-run hypotheses and a full results table, and every row matches the experiment's `result.json` (compared by script). The copies are plain `cp` of the committed files, checked with `cmp`. Re-copy them after any README changes. Flagged, not fixed: in 03, checks 5, 21, 24 and 25 appear only in `result.json`, not in the `evidence/` HTTP transcripts. The 03 transcript also shows alice2's `sameas-test.ttl` left over from an earlier run (its cleanup DELETE returns 403).
