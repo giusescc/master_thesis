@@ -2,6 +2,12 @@
 
 Newest first. One short entry per Slice: what was built, why, where, and the decisions to respect.
 
+## 2026-09-22: Chapter 2 export (Legionary export, branch worktree-export)
+- **What:** `export/` is git-ignored. `export/ch2/` in the main checkout holds unmodified copies (destination ← source; no README amended): `RESULTS.md` ← `RESULTS.md`; `CH2_exp00_README.md` ← `experiments/00_hello_pod/README.md`; `CH2_exp01_README.md` ← `experiments/01_share_revoke/README.md`; `CH2_exp02_README.md` ← `experiments/02_odrl_consent/README.md`; `CH2_exp03_README.md` ← `experiments/03_portability/README.md`; `RELATED_WORK.md` ← `experiments/02_odrl_consent/RELATED_WORK.md`.
+- **Why:** Giuseppe needs the evidence write-ups next to his thesis Chapter 2 draft without committing duplicates.
+- **Where:** `.gitignore` (the `export/` rule). The copies are local only and never committed.
+- **Decisions:** No README was amended. All four already had their pre-run hypotheses and a full results table, and every row matches the experiment's `result.json` (compared by script). The copies are plain `cp` of the committed files, checked with `cmp`. Re-copy them after any README changes. Flagged, not fixed: in 03, checks 5, 21, 24 and 25 appear only in `result.json`, not in the `evidence/` HTTP transcripts. The 03 transcript also shows alice2's `sameas-test.ttl` left over from an earlier run (its cleanup DELETE returns 403).
+
 ## 2026-09-22: Baseline reconnaissance (Legionary recon, branch worktree-recon)
 - **What exists:** a local Solid lab for an HSG Master's thesis. It asks what CSS 7.2.0 + WAC + Solid-OIDC actually *enforce* versus merely *declare*, as evidence for GDPR Art. 20, Data Act and DMA Art. 6(9). There are four experiments (00_hello_pod, 01_share_revoke, 02_odrl_consent, 03_portability), each with pre-registered hypotheses, results and redacted HTTP transcripts. `RESULTS.md` has the cross-experiment findings.
 - **Where:** `solidlib/` is the client library (auth with DPoP/ES256, provision, session, resources, wac, meta, evidence, checks = the status model, lab = `.env` loader). `experiments/NN_name/` holds `README.md` (hypotheses + result), `run.py`, `result.json` and `evidence/`. `start.sh` runs the lab, `scripts/seed.py` provisions users, `scripts/webid_host.py` serves the :3002 WebID. `tests/test_experiments.py` is the regression gate. `figures/` holds SVGs. `prompts/NN-*/` is a verbatim AI-use archive (`prompt.md` + `outcome.md`).

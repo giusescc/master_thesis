@@ -24,3 +24,6 @@ webid/
 
 # Generated: Bob's local copy, created by experiments/01_share_revoke
 experiments/01_share_revoke/bob_local_copy/
+
+# Generated: local export copies (e.g. export/ch2/ for thesis chapter 2)
+export/
