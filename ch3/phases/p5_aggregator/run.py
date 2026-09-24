@@ -21,9 +21,17 @@ VOLATILE = {"date", "etag", "last-modified", "content-length", "keep-alive", "co
 
 
 def signature(rec: dict) -> dict:
-    """What a recipient can compare between two refusals: status, body, stable headers."""
-    headers = {k.lower(): v for k, v in rec["headers"].items() if k.lower() not in VOLATILE}
-    return {"status": rec["status"], "body": rec.get("body", ""), "headers": dict(sorted(headers.items()))}
+    """What a recipient can compare between two refusals: status, body, stable headers.
+
+    The requested URL itself is replaced by ``<self>`` (the Link header names the
+    resource's own .meta/.acl), so three different URLs can be compared on what
+    they say, not on which URL was asked for. Added after the dry run, before
+    the real runs; the raw responses are logged unmodified.
+    """
+    own = rec["url"]
+    headers = {k.lower(): v.replace(own, "<self>") for k, v in rec["headers"].items() if k.lower() not in VOLATILE}
+    return {"status": rec["status"], "body": rec.get("body", "").replace(own, "<self>"),
+            "headers": dict(sorted(headers.items()))}
 
 
 def run_one(log, config, variant, rep, rng) -> None:
