@@ -10,6 +10,7 @@ other header is kept: Chapter 3 needs Cache-Control, ETag, Vary etc. in full.
 
 from __future__ import annotations
 
+import hashlib
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -98,6 +99,16 @@ class Agent:
         """Fetch the access token up front so it is not inside a timed window."""
         if self._auth:
             self._auth.access_token()
+
+    def token_fingerprint(self) -> dict | None:
+        """Identify the current access token without logging it: sha256 prefix + expiry."""
+        if not self._auth or self._auth._token is None:
+            return None
+        token = self._auth._token
+        return {
+            "sha256_12": hashlib.sha256(token.value.encode()).hexdigest()[:12],
+            "expires_at": token.expires_at.isoformat(),
+        }
 
 
 def response_record(response: requests.Response, body: bool = False, limit: int = 4000) -> dict:

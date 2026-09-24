@@ -25,6 +25,7 @@ import hashlib
 import json
 import os
 import subprocess
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -66,6 +67,7 @@ class RunLog:
         fd = os.open(self.path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
         self._fh = os.fdopen(fd, "w", encoding="utf-8")
         self._seq = 0
+        self._lock = threading.Lock()
         self._t0 = time.perf_counter()
         self.closed = False
         self.write(
@@ -79,10 +81,11 @@ class RunLog:
         return round((time.perf_counter() - self._t0) * 1000, 3)
 
     def write(self, event: str, **fields: Any) -> dict:
-        line = {"ts": utc_ms(), "seq": self._seq, "t_ms": self.t_ms(), "event": event, **fields}
-        self._fh.write(json.dumps(line, ensure_ascii=False, default=str) + "\n")
-        self._fh.flush()
-        self._seq += 1
+        with self._lock:  # pollers and receivers write from their own threads
+            line = {"ts": utc_ms(), "seq": self._seq, "t_ms": self.t_ms(), "event": event, **fields}
+            self._fh.write(json.dumps(line, ensure_ascii=False, default=str) + "\n")
+            self._fh.flush()
+            self._seq += 1
         return line
 
     def summary(self, outcome: dict[str, Any], metrics: dict[str, Any] | None = None) -> None:
