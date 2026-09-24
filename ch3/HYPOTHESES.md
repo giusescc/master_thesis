@@ -200,3 +200,46 @@ unsub-anonymous, unsub-alice}, ≥ 10 reps each.
   `DPoP` proof. The token's `webid` is
   `<base>/.notifications/WebhookChannel2023/webId`. Source reading:
   `WebhookEmitter.ts`.
+
+## P4: Comunica link traversal (pre-registered before P4's first run, dry runs included)
+
+**Client.** `@comunica/query-sparql-link-traversal-solid` **0.8.0** (own
+`package.json` + lockfile in `phases/p4_comunica/`), default engine settings,
+run as appR. appR authenticates with DPoP client credentials written with
+`jose` 6.2.12. Every HTTP request the engine makes is logged
+(`comunica_http`). One Node process per run holds the engine(s)
+(`driver.mjs`).
+
+**Query** (identical before and after), with the run container as the only
+seed source:
+`SELECT ?person ?name ?job WHERE { ?person schema:name ?name ; schema:jobTitle ?job . }`
+
+**Procedure.** Build the scene. Engine e1 runs the query. alice revokes
+appR on `person.ttl`, and appR's direct GET (logged) confirms 403. Then the
+query runs again:
+- **a:** on e1, unchanged;
+- **a-invalidate:** on e1 after `e1.invalidateHttpCache()`;
+- **b:** on a fresh engine e2.
+
+**Conditions.** p4 × {wac, acp} × {a, a-invalidate, b}, ≥ 10 reps each.
+
+**Predictions.**
+- **H4.1.** Before the revoke, the query returns both fictional people
+  (Tesmer Quillon from `person.ttl`, Liesel Omandyke from `distractor.ttl`).
+  The engine reaches both files by following `ldp:contains` from the
+  container.
+- **H4.2 (a).** After the revoke, the same engine still returns **Tesmer
+  Quillon**, and it makes **no** HTTP request to `person.ttl` for the second
+  query. Source reading: `ActorOptimizeQueryOperationQuerySourceIdentify`
+  keeps an LRU cache of identified sources keyed by source URL, cleared only
+  through the HTTP invalidator. We don't predict whether the engine
+  re-requests the container itself.
+- **H4.3 (a-invalidate) and H4.4 (b).** After the revoke, the engine
+  requests `person.ttl` again and receives 403. **Tesmer Quillon is not in
+  the result.** Not predicted: whether the 403 surfaces as a query error or
+  is skipped with the distractor's row still returned. The outcome records
+  which one happens.
+- **H4.5.** WAC and ACP give the same categorical outcome per variant.
+- **H4.6.** Nothing in any response to the engine signals the revoke before
+  the engine next requests `person.ttl`. The engine learns of it only through
+  a 403 on a request it chooses to make.
