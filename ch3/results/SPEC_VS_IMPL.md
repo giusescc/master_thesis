@@ -94,3 +94,40 @@ sentence is read; the reading is stated).
 - **Spec (ACP §7.1),** https://solidproject.org/TR/acp#conforming-resource-server:
   > When responding to requests targetting access controlled resources, conforming resource servers MUST include a Link header with the rel value of acl and controlled resources' ACRs as the link target RFC 8288.
 - **Spec position:** requires. **Verdict:** consistent.
+
+## P2: HTTP caching
+
+### P2-1. No `Cache-Control` / `Expires` on LDP resources; `Vary: Accept,Authorization,Origin`
+- **Observed:** CSS 7.2.0 with WAC and with ACP sent no `Cache-Control` and
+  no `Expires` on `person.ttl` (40/40 runs). It did send
+  `Vary: Accept,Authorization,Origin`, `ETag` and `Last-Modified`.
+- **Spec (Solid Protocol §2.1),** https://solidproject.org/TR/protocol#server-caching:
+  > Servers SHOULD conform to HTTP Caching [RFC9111].
+- **Spec (RFC 9111 §4.2.2),** https://www.rfc-editor.org/rfc/rfc9111#section-4.2.2:
+  > Since origin servers do not always provide explicit expiration times, a cache MAY assign a heuristic expiration time when an explicit time is not specified, employing algorithms that use other field values (such as the Last-Modified time) to estimate a plausible expiration time.
+
+  > […] Therefore, origin servers are encouraged to send explicit directives (e.g., Cache-Control: no-cache) if they wish to prevent caching.
+- The Protocol gives no Cache-Control guidance for access-controlled
+  resources (**silent**; `spec_quotes.md` §1d).
+- **CSS source:** `src/server/middleware/StaticAssetHandler.ts` L218 is the
+  only `cache-control` emitter (static assets). `Vary` comes from
+  `config/http/middleware/handlers/constant-headers.json` L10–11.
+- **Verdict:** consistent (the Protocol is silent; RFC 9111 does not require
+  an origin to send Cache-Control). Consequence, observed: a proxy that
+  honours origin headers (config A) stored nothing.
+
+### P2-2. A shared cache configured to ignore the origin served stale and unauthenticated reads
+- **Observed:** nginx config B (deliberately permissive) served the cached
+  fixture to appR for ≈60 s after the revoke, and to an anonymous client.
+  This is proxy behaviour under a configuration we wrote, not CSS behaviour.
+- **Spec (RFC 9111 §3.5),** https://www.rfc-editor.org/rfc/rfc9111#section-3.5:
+  > A shared cache MUST NOT use a cached response to a request with an Authorization header field (Section 11.6.2 of [HTTP]) to satisfy any subsequent request unless the response contains a Cache-Control field with a response directive (Section 5.2.2) that allows it to be stored by a shared cache, and the cache conforms to the requirements of that directive for that response.
+- appR's requests carried `Authorization: DPoP …`, and CSS's responses
+  carried no Cache-Control. Config B's reuse of them is therefore something
+  RFC 9111 §3.5 forbids for a shared cache. The deviation is in the **proxy
+  configuration we wrote** (a deliberately permissive one), not in CSS.
+- **Spec (Solid Protocol, WAC, ACP):** **silent** on intermediaries caching
+  authorized responses, and on notifying caches of access changes.
+- **Verdict:** no CSS deviation; **DEVIATION by the config-B proxy** from
+  RFC 9111 §3.5 (by design). The stale window is a property of the proxy
+  configuration; CSS 7.2.0 has no mechanism to invalidate it.

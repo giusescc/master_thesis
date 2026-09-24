@@ -50,3 +50,53 @@ Timings (medians over 10 runs; min–max):
   "resource deleted" responses.
 - Predictions H1.1–H1.6: all matched. H1.5 (no `WAC-Allow` under ACP) had
   already been seen in the Chunk 1 smoke test, as noted in HYPOTHESES.md.
+
+## P2: HTTP caching
+
+**Ran:** full run 1, p2 × {wac, acp} × {proxyA, proxyB}, 10 reps each (40
+runs, 0 failed). Raw: [`raw/p2/wac/`](raw/p2/wac/), [`raw/p2/acp/`](raw/p2/acp/).
+Proxy: nginx 1.28.3 in Docker (`config/nginx/IMAGE`, pinned by digest).
+Config A honours origin headers. Config B is a **deliberately permissive
+configuration** (every 200 stored 60 s, `Vary` ignored, URL-only cache key).
+Both are proxy configurations written for this experiment, not CSS behaviour.
+
+**Instrument correction (documented, before the accepted runs).** A first
+batch (7 runs, wac/proxyA) was stopped. Two of its runs failed with a 30 s
+client timeout. The CSS log shows the proxied request arriving about 36 s
+after nginx sent it (e.g. sent 17:11:34, received 17:12:10 UTC). That is a
+stall in Docker Desktop's container-to-host network, which occurred when
+nginx opened a new upstream connection per request. Both configs were given
+upstream keepalive, which does not change what is cached, and P2 was rerun.
+The 7 runs stay on disk and are listed with the reason in
+[`raw/EXCLUDED.tsv`](raw/EXCLUDED.tsv). They are not counted.
+
+Same categorical outcome in 10/10 runs for every condition:
+
+| Observation | A, WAC | A, ACP | B, WAC | B, ACP |
+|---|---|---|---|---|
+| origin `Cache-Control` / `Expires` on `person.ttl` | absent / absent | absent / absent | absent / absent | absent / absent |
+| origin `Vary` | `Accept,Authorization,Origin` | same | same | same |
+| origin `ETag`, `Last-Modified` | present | present | present | present |
+| proxy status of appR's 1st / 2nd GET before the revoke | MISS / MISS | MISS / MISS | MISS / HIT | MISS / HIT |
+| bob's GET before the revoke (after appR's) | 200 MISS | 200 MISS | **200 HIT** (served appR's cached copy) | **200 HIT** |
+| appR direct GET after the revoke | 403 | 403 | 403 | 403 |
+| appR's first GET through the proxy after the revoke | 403 MISS | 403 MISS | **200 HIT** | **200 HIT** |
+| cached body served after the revoke = the fixture (sha256) | n/a | n/a | yes | yes |
+| appR's proxied GETs answered 200 after the revoke (1 s polling, 70 s) | 0 | 0 | 61 of 71 | 61 of 71 |
+| last proxied 200 after the revoke (ms) | n/a | n/a | 60 017–60 040 | 60 018–60 029 |
+| first proxied 403 after the revoke (ms) | 14–37 | 21–46 | 61 038–61 100 | 61 054–61 126 |
+| **anonymous** GET through the proxy just after the revoke | 401 | 401 | **200 HIT** | **200 HIT** |
+| anonymous GET directly to CSS just after the revoke | 401 | 401 | 401 | 401 |
+| anonymous GET through the proxy at the end (70 s) | 401 | 401 | 401 | 401 |
+| bob through the proxy at the end | 200 | 200 | 200 | 200 |
+
+- Under config B, the proxy served the cached fixture to appR for about 60 s
+  after CSS had begun answering appR with 403. It also served it to an
+  unauthenticated client, to whom CSS itself answered 401. The stale answers
+  formed one block, followed only by denials (`proxy_stale_then_denied_contiguous`).
+  They ended when the entry was 60 s old, not in response to anything CSS sent.
+  No request to CSS in that window reached the resource (every answer was a HIT).
+- Under config A, nothing was cached, because CSS 7.2.0 sent no freshness
+  information for `person.ttl`. Proxied answers matched direct answers.
+- CSS 7.2.0 with WAC and with ACP sent nothing to the proxy when the ACL/ACR
+  changed. Predictions H2.1–H2.6: all matched.
