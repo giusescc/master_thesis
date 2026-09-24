@@ -243,3 +243,46 @@ query runs again:
 - **H4.6.** Nothing in any response to the engine signals the revoke before
   the engine next requests `person.ttl`. The engine learns of it only through
   a 403 on a request it chooses to make.
+
+## P5: aggregator (pre-registered before P5's first run, dry runs included)
+
+**Aggregator** (`lib/aggregator.py`): acting as appR, it copies every triple
+of `person.ttl` and `distractor.ttl` into SQLite (one row per triple, with its
+source URL) at a fixed sync interval of 1 s. There are two policies:
+- **naive:** a failed fetch changes nothing;
+- **403-aware:** a fetch that now fails deletes that source's rows. This
+  purge is **recipient-side logic written for this experiment**. It is not a
+  server feature, and the server does not request it.
+
+**Procedure.** Build the scene. Set up two comparison probes in the same
+container:
+- `never.ttl`, which appR is never granted;
+- `scratch.ttl`, which appR can read (checked), and which alice later
+  deletes.
+
+Run 3 syncs, then alice revokes appR on `person.ttl`, then 10 more syncs.
+The first post-revoke response to appR for `person.ttl` is logged in full
+(status, all headers, body). Then appR GETs `never.ttl`, alice deletes
+`scratch.ttl`, and appR GETs it again. The three refusals are compared on
+status, body and stable headers (excluding Date, ETag, Last-Modified,
+Content-Length, Keep-Alive, Connection).
+
+**Conditions.** p5 × {wac, acp} × {naive, 403-aware}, ≥ 10 reps each.
+
+**Predictions.**
+- **H5.1.** Before the revoke, rows from both sources are copied.
+- **H5.2.** The first post-revoke fetch of `person.ttl` returns **403**
+  (as in P1).
+- **H5.3 (naive).** All of `person.ttl`'s rows are still in the store after
+  10 post-revoke syncs. This follows from the policy by construction. The
+  observation is that nothing from the server removes or flags them.
+- **H5.4 (403-aware).** The rows are deleted at the first sync after the
+  revoke. The time from revoke to deletion is at most one sync interval plus
+  one request (≲ 1.1 s).
+- **H5.5 (both configs).** The three refusals ("access withdrawn",
+  "never had access", "resource deleted") are **identical** to appR: the
+  same status (403), the same body and the same stable headers. Nothing in
+  the response tells a recipient *why* it can no longer read. The least
+  certain part is the deleted resource, which could instead be 404.
+- **H5.6.** appR's `distractor.ttl` rows stay in both variants (its access
+  is unchanged).
