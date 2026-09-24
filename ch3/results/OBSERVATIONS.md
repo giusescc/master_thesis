@@ -243,3 +243,58 @@ The message does not mention the 403, access, or `person.ttl`.
 - Scope: one engine version, default configuration, one query shape. A
   configuration that tolerates failed links (lenient mode) was not run. It
   would be a new condition, and it was not pre-registered.
+
+## P5: aggregator
+
+**Ran:** full run 1, p5 × {wac, acp} × {naive, 403-aware}, 10 reps each (40
+runs, 0 failed). Raw: [`raw/p5/wac/`](raw/p5/wac/), [`raw/p5/acp/`](raw/p5/acp/).
+The aggregator (`lib/aggregator.py`) copies appR-readable triples into SQLite
+every 1 s. The 403-aware purge is **recipient-side logic written for this
+experiment**, not a server feature.
+
+**Instrument change (after the dry run, before the real runs; commit
+d908c14).** The refusal comparison first reported the three refusals as "not
+identical". The only difference was each resource's own URL inside its
+`Link` header (`<…/person.ttl.acl>` vs `<…/never.ttl.acl>`). The comparison
+now replaces the requested URL with `<self>`. The raw responses are logged
+unmodified.
+
+Same categorical outcome in 10/10 runs for every condition:
+
+| Observation | naive, WAC | naive, ACP | 403-aware, WAC | 403-aware, ACP |
+|---|---|---|---|---|
+| `person.ttl` rows copied before the revoke | 23 | 23 | 23 | 23 |
+| first post-revoke fetch of `person.ttl` | 403 | 403 | 403 | 403 |
+| `person.ttl` rows left after 10 post-revoke syncs | **23** (all) | **23** | 0 | 0 |
+| `distractor.ttl` rows (access unchanged) | 23 | 23 | 23 | 23 |
+| revoke → rows deleted (ms), median (min–max) | n/a | n/a | 21.1 (13.2–35.1) | 24.8 (21.6–46.8) |
+
+- **Naive:** the rows stayed by construction (the policy keeps rows on a
+  failed fetch). The observation is that nothing from the server removed or
+  flagged them. The only change appR saw was the 403 on its next fetch.
+- **403-aware:** the rows went at the first sync after the revoke, because
+  our code deletes them on a non-2xx. The latency is that of one request.
+
+**The three refusals appR can compare** (post-revoke `person.ttl`;
+`never.ttl`, which appR was never granted; `scratch.ttl`, which appR could
+read and alice then deleted). In 40/40 runs, on WAC and on ACP:
+
+| | withdrawn | never had access | deleted |
+|---|---|---|---|
+| status | 403 | 403 | 403 |
+| body (`Accept: text/turtle`) | identical | identical | identical |
+| stable headers (with the requested URL normalised) | identical | identical | identical |
+
+The body, verbatim, in all 120 refusals: `<b0> <http://purl.org/dc/terms/title> "ForbiddenHttpError";` / `<http://purl.org/dc/terms/description> "".`
+Header names present: `accept-ranges`, `access-control-allow-credentials`,
+`access-control-allow-origin`, `access-control-expose-headers`,
+`content-type`, `link`, `transfer-encoding`, `vary`, `x-powered-by`. The
+`Link` header names the resource's own `.meta` and `.acl`, and it does so for
+the deleted resource too.
+
+- Nothing in the response lets appR tell "access withdrawn" from "never had
+  access" or from "resource deleted". The deleted resource answered 403, not
+  404, to appR, who had no Read on the container's members. (CLAUDE.md
+  already records that CSS gives the owner 404 there.)
+- Predictions H5.1–H5.6: all matched. H5.5's least certain part (deleted →
+  possibly 404) resolved as 403.

@@ -268,3 +268,36 @@ WebhookChannel2023 (Draft CG Report 0.1).
   treats a 403 met during traversal. The server's part is P1-1.
 - **Verdict:** consistent for CSS. Comunica's handling (a whole-query error)
   is a client choice, with no spec text to compare it against.
+
+## P5: aggregator
+
+### P5-1. Withdrawn, never granted and deleted are indistinguishable to the recipient
+- **Observed:** CSS 7.2.0 answered appR with the same 403, the same body
+  and the same stable headers for a withdrawn grant, a never-granted resource
+  and a deleted resource (WAC and ACP, 40/40; OBSERVATIONS § P5).
+- **Spec (Solid Protocol §2.1),** https://solidproject.org/TR/protocol#server-unauthenticated:
+  > When a client does not provide valid credentials when requesting a resource that requires it (see WebID), servers MUST send a response with a 401 status code (unless 404 is preferred for security reasons).
+- **Spec (Solid Protocol §2.2),** https://solidproject.org/TR/protocol#client-authentication-different-credentials:
+  > When a client receives a response with a 403 or 404 status code, the client MAY repeat the request with different credentials.
+- **Spec (WAC §8.1, non-normative),** https://solidproject.org/TR/wac#consider-acl-resource-activities:
+  > Implementations are encouraged to use mechanisms to record activities about ACL resources for the purpose of accountability and integrity, e.g., by having audit trails, notification of changes, reasons for change, preserving provenance information.
+- **Spec position:** the Protocol's status-code text (`spec_quotes.md` §1a)
+  has no sentence on telling an authenticated client *why* access is
+  refused, or on a distinct status for "access withdrawn". For WAC and ACP,
+  no search for such text was recorded when the quotes were fetched; the
+  quoted sections (§2, §3) contain none. The nearest text is WAC §8.1 above,
+  which is non-normative and does not say to whom a change is notified.
+  Reading: **silent**, scoped to the text quoted.
+- **Verdict:** consistent (silent spec). A recipient-side purge on 403 (our
+  403-aware policy) cannot be triggered by "withdrawn" as such. It can only be
+  triggered by "refused", which also covers deletion and never-granted.
+
+### P5-2. Copied data stays unless the recipient deletes it
+- **Observed:** the naive aggregator kept all 23 rows through 10 post-revoke
+  syncs. Nothing from CSS reached it except the 403 on its own fetches.
+- **Spec:** none of the Solid Protocol, WAC or ACP sections quoted in
+  `spec_quotes.md` §1–3 has text on data a client has already copied. No
+  dedicated search for such text was recorded. Reading: **silent**, scoped to
+  the text quoted.
+- **Verdict:** consistent (silent spec). Outside the server's reach by
+  design; no CSS source is involved.
