@@ -252,3 +252,19 @@ WebhookChannel2023 (Draft CG Report 0.1).
   Authenticated delivery: consistent. The token's `webid` equals the `sender`
   in every successful Webhook subscription response (checked over all 40
   lifecycle runs' raw files after the run).
+
+## P4: Comunica link traversal
+
+### P4-1. A client's second query after the revoke is refused at the server
+- **Observed:** Comunica 0.8.0, reused or fresh, re-requested `person.ttl` and
+  got 403 from CSS 7.2.0 (WAC and ACP, 60/60). The query then failed as a
+  whole (OBSERVATIONS § P4).
+- **Spec (WAC §5.3.1 and ACP §6.1):** the same requirements as P1-1. Denial
+  of this request is what they require.
+- **Spec (Solid Protocol §2.2),** https://solidproject.org/TR/protocol#client-authentication-different-credentials:
+  > When a client receives a response with a 403 or 404 status code, the client MAY repeat the request with different credentials.
+- **Spec position:** **silent** on what a client does with data it read
+  before a revoke (keeping, caching, discarding), and on how a query client
+  treats a 403 met during traversal. The server's part is P1-1.
+- **Verdict:** consistent for CSS. Comunica's handling (a whole-query error)
+  is a client choice, with no spec text to compare it against.

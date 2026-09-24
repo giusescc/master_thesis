@@ -199,3 +199,47 @@ The source reading behind H3.7 (`WebSocket2023Listener.canHandle` throws for
 an unknown or expired channel) is consistent with the log line. The error is
 raised after the upgrade, so the client is not refused. This last point is
 inferred from the log plus the observation, not traced line by line.
+
+## P4: Comunica link traversal
+
+**Ran:** full run 1, p4 × {wac, acp} × {a, a-invalidate, b}, 10 reps each
+(60 runs, 0 failed). Raw: [`raw/p4/wac/`](raw/p4/wac/), [`raw/p4/acp/`](raw/p4/acp/).
+Client: `@comunica/query-sparql-link-traversal-solid` 0.8.0, default engine
+settings, as appR (`phases/p4_comunica/`, own lockfile). Every HTTP request
+the engine made is in the raw files (`comunica_http`).
+
+The categorical outcome was the same in 60/60 runs, for all three variants
+and both configs:
+
+| Observation | a (same engine) | a-invalidate | b (fresh engine) |
+|---|---|---|---|
+| query before the revoke | both people (Tesmer Quillon, Liesel Omandyke) | same | same |
+| HTTP requests for the first query | 6 (container, `.meta`, both files, their `.meta`) | same | same |
+| appR's direct GET after the revoke | 403 | 403 | 403 |
+| HTTP requests for the second query | **2: container 200, then `person.ttl` 403** | same | same |
+| second query result | **error, no rows** | same | same |
+| revoked person in the second result | no | no | no |
+| distractor person (still readable) in the second result | **no** (the query stopped before requesting `distractor.ttl`) | no | no |
+
+The error the engine returned (verbatim, identical in all 60 runs):
+`Hypermedia link resolution failed: none of the configured actors were able to resolve links from metadata` / `Error messages of failing actors:` / `Actor urn:comunica:default:rdf-resolve-hypermedia-links/actors#traverse requires a 'traverse' metadata entry.` / `Actor urn:comunica:default:rdf-resolve-hypermedia-links/actors#next requires a 'next' metadata entry.`
+The message does not mention the 403, access, or `person.ttl`.
+
+- **The same engine instance re-requested the container and `person.ttl` for
+  the second query.** It did not answer from anything kept from the first query.
+  So `invalidateHttpCache()` (a-invalidate) and a fresh engine (b) made no
+  observable difference in this setup.
+- With default settings, one 403 during traversal made the whole query fail.
+  Rows the engine could still read (the distractor) were not returned either.
+- **Predictions.** **H4.2 was wrong.** It predicted that engine `a` would
+  return Tesmer Quillon without requesting `person.ttl`. The source reading
+  behind it (an LRU cache of identified sources in
+  `ActorOptimizeQueryOperationQuerySourceIdentify`) does not describe what
+  this engine did for a link-traversal query seeded with a container. Why
+  was not traced in the Comunica source. H4.1, H4.3, H4.4 and H4.5 matched.
+  For H4.3/H4.4, the open point resolved as "query error, no rows" (not
+  "403 skipped, distractor returned"). H4.6 matched: the engine learned of the
+  revoke only from the 403 on its own request.
+- Scope: one engine version, default configuration, one query shape. A
+  configuration that tolerates failed links (lenient mode) was not run. It
+  would be a new condition, and it was not pre-registered.
