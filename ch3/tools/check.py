@@ -11,7 +11,7 @@ from __future__ import annotations
 import sys
 
 from ch3.lib.conditions import MIN_REPS, conditions
-from ch3.tools.rawindex import by_condition, integrity, load_runs
+from ch3.tools.rawindex import by_condition, excluded, integrity, load_runs
 
 
 def main() -> int:
@@ -35,6 +35,11 @@ def main() -> int:
         if run.bad_ts_lines:
             problems.append(f"{run.path.name}: lines without a valid ISO-ms-UTC ts: {run.bad_ts_lines[:10]}")
     problems += integrity()
+    skipped = excluded()
+    if skipped:
+        print(f"\n{len(skipped)} raw file(s) kept but excluded from counting (raw/EXCLUDED.tsv):")
+        for rel, reason in skipped.items():
+            print(f"  - {rel}: {reason}")
 
     if problems:
         print(f"\nexp:check FAILED ({len(problems)} problem(s)):")

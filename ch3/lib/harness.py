@@ -3,7 +3,9 @@
 Each repetition gets its own RunLog. An exception inside a run is written to
 that run's file as ``run_error`` (with the traceback) and the run is counted as
 failed by ``exp:check``; the harness moves on rather than retrying, so a flaky
-condition shows up in the evidence instead of being hidden.
+condition shows up in the evidence instead of being hidden. A make-up rep
+(``--start-rep 11 --reps 1``) is a new file with a new rep number; the failed
+run stays on disk and is reported in OBSERVATIONS.md.
 
 ``--dry-run`` writes to ``ch3/results/scratch/`` (git-ignored), never counted.
 """
@@ -28,6 +30,8 @@ def main(phase: str, run_one: RunFn, before_variant: Callable[[str, str], None] 
     parser.add_argument("--config", choices=[*CONFIGS, "all"], default="all")
     parser.add_argument("--variant", choices=[*VARIANTS[phase], "all"], default="all")
     parser.add_argument("--reps", type=int, default=MIN_REPS)
+    parser.add_argument("--start-rep", type=int, default=1,
+                        help="first rep number, e.g. 11 for a make-up rep after a failed run")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -39,7 +43,7 @@ def main(phase: str, run_one: RunFn, before_variant: Callable[[str, str], None] 
             if before_variant:
                 before_variant(config, variant)
             try:
-                for rep in range(1, args.reps + 1):
+                for rep in range(args.start_rep, args.start_rep + args.reps):
                     log = RunLog(phase, config, variant, rep, scratch=args.dry_run)
                     rng = random.Random(SEED + rep)
                     status = "ok"

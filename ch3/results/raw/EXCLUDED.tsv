@@ -1,0 +1,8 @@
+# Raw files kept on disk but not counted by exp:check / exp:compare. Format: <path relative to raw/><TAB><reason>. Each is described in OBSERVATIONS.md.
+p2/wac/20260924T170630.454Z-proxyA-r01.jsonl	P2 instrument correction: nginx config without upstream keepalive (see config/nginx/*.conf); batch stopped after Docker Desktop host-network stalls. Rerun with corrected configs.
+p2/wac/20260924T170740.676Z-proxyA-r02.jsonl	P2 instrument correction: failed with a 30 s read timeout; CSS logged the proxied request's arrival ~36 s after nginx sent it (Docker Desktop host network). Rerun with corrected configs.
+p2/wac/20260924T170850.874Z-proxyA-r03.jsonl	P2 instrument correction: nginx config without upstream keepalive; batch stopped. Rerun with corrected configs.
+p2/wac/20260924T171001.189Z-proxyA-r04.jsonl	P2 instrument correction: nginx config without upstream keepalive; batch stopped. Rerun with corrected configs.
+p2/wac/20260924T171111.399Z-proxyA-r05.jsonl	P2 instrument correction: failed with a 30 s read timeout; CSS logged the proxied request's arrival ~36 s after nginx sent it (Docker Desktop host network). Rerun with corrected configs.
+p2/wac/20260924T171204.607Z-proxyA-r06.jsonl	P2 instrument correction: nginx config without upstream keepalive; batch stopped. Rerun with corrected configs.
+p2/wac/20260924T171314.825Z-proxyA-r07.jsonl	P2 instrument correction: batch stopped by hand mid-run (killed; never closed, so not in MANIFEST). Rerun with corrected configs.

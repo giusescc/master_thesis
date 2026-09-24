@@ -24,9 +24,32 @@ class Run:
     outcome: dict | None
 
 
+EXCLUDED = RAW / "EXCLUDED.tsv"
+
+
+def excluded() -> dict[str, str]:
+    """Raw files kept on disk but not counted, with the documented reason.
+
+    Format: ``<path relative to raw/>\\t<reason>``. A run is excluded only when
+    the instrument (not the system under test) was at fault; each exclusion is
+    also described in OBSERVATIONS.md.
+    """
+    if not EXCLUDED.exists():
+        return {}
+    out = {}
+    for line in EXCLUDED.read_text().splitlines():
+        if line.strip() and not line.startswith("#"):
+            rel, reason = line.split("\t", 1)
+            out[rel] = reason
+    return out
+
+
 def load_runs() -> list[Run]:
     runs = []
+    skip = excluded()
     for path in sorted(RAW.glob("p*/*/*.jsonl")):
+        if str(path.relative_to(RAW)) in skip:
+            continue
         bad, lines = [], []
         for n, text in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             try:
@@ -70,8 +93,11 @@ def integrity() -> list[str]:
             if rel in recorded:
                 problems.append(f"{rel}: listed twice in MANIFEST (a file was written twice)")
             recorded[rel] = digest
+    skip = excluded()
     for path in sorted(RAW.glob("p*/*/*.jsonl")):
         rel = str(path.relative_to(RAW))
+        if rel not in recorded and rel in skip:
+            continue  # e.g. a run killed before it closed; documented in EXCLUDED.tsv
         if rel not in recorded:
             problems.append(f"{rel}: not in MANIFEST (run never closed, or file added by hand)")
         elif sha256(path) != recorded[rel]:
