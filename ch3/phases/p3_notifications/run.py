@@ -101,7 +101,11 @@ def run_lifecycle(log, config, variant, rep) -> None:
         late = WSListener(log, "ws-person-after-expiry", subs["ws-person"]["channel"]["receiveFrom"])
         late.start()
         late.connected.wait(10)
+        # Added after the dry run showed the late connect is accepted: is that socket live?
+        t_late = modify(log, s.alice, s.person, "after-expiry-reconnect")["t_ms"]
+        time.sleep(SETTLE_S)
         expiry = {
+            "after_expiry_reconnect_receives": _count(late.messages, t_late) > 0,
             "after_expiry_ws_person": _count(live.messages, t) if live else None,
             "after_expiry_hook_person": _count(msgs("hook-person"), t),
             "ws_closed_by_server_by_then": bool(live and live.closed_by == "server"),
