@@ -131,3 +131,124 @@ sentence is read; the reading is stated).
 - **Verdict:** no CSS deviation; **DEVIATION by the config-B proxy** from
   RFC 9111 §3.5 (by design). The stale window is a property of the proxy
   configuration; CSS 7.2.0 has no mechanism to invalidate it.
+
+## P3: notifications
+
+Notification specs as fetched (`docs/spec_quotes.md` §4–6): Solid
+Notifications Protocol 0.3.0 (TR, 2024-05-12; the 0.4.0 Editor's Draft was
+checked too), WebSocketChannel2023 (Editor's Draft 2022-12-27),
+WebhookChannel2023 (Draft CG Report 0.1).
+
+### P3-1. Existing channels keep delivering after the revoke
+- **Observed:** after alice revoked appR's Read on `person.ttl`, appR's
+  existing WebSocket and Webhook channels on it delivered 20/20
+  notifications each, on WAC and ACP, in 40/40 lifecycle runs (OBSERVATIONS § P3).
+- **Spec (Notifications §2),** https://solidproject.org/TR/notifications-protocol#authentication-authorization:
+  > This specification does not require a specific authentication and authorization mechanism to be used with the Solid Notification Protocol. Implementations are encouraged to use existing approaches, such as those described in the Solid Protocol sections on Authentication and Authorization [SOLID-PROTOCOL].
+- **Spec (Notifications §4.3, non-normative),** https://solidproject.org/TR/notifications-protocol#security-privacy-review-personal-data:
+  > Access to subscription service and notification message are only granted to authorized access subjects.
+- **Spec position:** **silent** in normative text on re-checking
+  authorization per notification or after access to the topic changes
+  (`spec_quotes.md` §4a). The non-normative review sentence says notification
+  messages are "only granted to authorized access subjects".
+- **CSS source (v7.2.0, b4fe2837):** read permission is checked once, at
+  subscription (`src/server/notifications/NotificationSubscriber.ts`
+  L118–122, L139–148). `ListeningActivityHandler.ts` L39–75 (`emit`) has no
+  permission check. Nothing listens for ACL/ACR changes (`spec_quotes.md` §11 b, d, h).
+- **Verdict:** no normative deviation (the normative text is silent).
+  **POSSIBLE DEVIATION** from the non-normative §4.3 sentence, if "authorized
+  access subjects" is read as "authorized at the time of each message": appR
+  was not authorized to read `person.ttl` when these messages were sent.
+
+### P3-2. Nothing tells the channel holder that access ended
+- **Observed:** no message on any of appR's channels in the 3 s after the
+  revoke, and no message at any time mentioning the `.acl` / `.acr` (40/40 runs).
+- **Spec:** the Notifications Protocol has no text on ending channels, or on
+  notifying subscribers, when permissions change (`spec_quotes.md` §4a: searched,
+  silent). The Protocol's §7.1 describes notifications as being
+  "about changes affecting a resource", https://solidproject.org/TR/protocol#notifications-protocol:
+  > Entities in a Solid ecosystem use the Solid Notifications Protocol to communicate about changes affecting a resource.
+- **Spec position:** **silent.**
+- **CSS source:** `spec_quotes.md` §11 (h): no ACL/ACR listener in
+  `src/server/notifications`; channels are deleted only on expiry
+  (`KeyValueChannelStorage.ts` L31–36, L84) or by `NotificationUnsubscriber.ts` L26.
+- **Verdict:** consistent (silent spec).
+
+### P3-3. `receiveFrom` works without credentials, including after the revoke
+- **Observed:** appR's WebSocket reconnect to the old `receiveFrom` after the
+  revoke sent no credentials, was accepted, and received the next modification
+  (40/40). A new subscription on `person.ttl` after the revoke was 403.
+- **Spec (WebSocketChannel2023 §3),** https://solid.github.io/notifications/websocket-channel-2023#authentication-authorization:
+  > As described by the Solid Notifications Protocol section on Authorization, the WebSocket subscription API requires authorization and follows the guidance of the Solid Protocol sections on Authentication and Authorization [SOLID-PROTOCOL].
+- **Spec (Notifications, temporary id),** https://solidproject.org/TR/notifications-protocol#security-privacy-review-temporary-id:
+  > The subscription response content can contain a capability URL to protect the notification channel which is only exposed to authorized Subscription Clients.
+- **Spec position:** requires authorization for the **subscription** API;
+  **silent** on authenticating the connection to `receiveFrom`. The
+  capability-URL model is described, and the spec's own example uses one.
+- **CSS source:** `WebSocket2023Listener.ts` L27–42 only looks the channel up
+  (no credentials, no authorizer); `receiveFrom` is derived from a random
+  UUID channel id (`BaseChannelType.ts` L231, `WebSocketChannel2023Type.ts` L46).
+- **Verdict:** consistent. The subscription check (403 after the revoke)
+  enforces access; the `receiveFrom` URL is a capability that the revoke
+  does not invalidate.
+
+### P3-4. Channel expiry: `endAt` = 20160 min / 2 min; after it, silence, not refusal
+- **Observed:** `endAt` was subscription time + 20160 min (default) or + 2 min
+  (`maxDuration` = 2). After `endAt`, no notification arrived; the open socket
+  was not closed by the server; a new WebSocket handshake to the expired
+  `receiveFrom` completed, and CSS logged `Unknown or expired WebSocket channel`
+  without delivering or closing (20/20 `short` runs;
+  `excerpts/p3-expiry-css-log.txt`).
+- **Spec (Notifications §2.3.2),** https://solidproject.org/TR/notifications-protocol#notify-endAt:
+  > The proposed or actual ending date and time of a notification channel with value represented in the xsd:dateTime datatype.
+- **Spec position:** **silent** on a maximum duration and on what a server
+  does when `endAt` is reached (`spec_quotes.md` §4b).
+- **CSS source:** `NotificationSubscriber.ts` L46–49, L80, L111–116 (default
+  20160 min, clamp); `KeyValueChannelStorage.ts` L31 (expiry checked lazily);
+  `WebSocket2023Storer.ts` L13–16, L51–60 (open sockets swept every 60 min by
+  default, not reached within a run); `WebSocket2023Listener.ts` L27–33 (the
+  error seen in the log).
+- **Verdict:** consistent (silent spec). The accepted-then-silent handshake
+  is a CSS implementation detail with no spec text to compare against.
+
+### P3-5. Anyone who knows the channel id can unsubscribe; the owner cannot find it
+- **Observed:** `DELETE <channel id>` returned 205 for bob, for an
+  unauthenticated client and for alice, and appR received nothing afterwards
+  (60/60). alice found no listing of appR's channel (storage description,
+  subscription endpoint: 200 without the id; `/.notifications/`: 400) and a
+  DELETE on the subscription endpoint returned 404.
+- **Spec:** "unsubscri" and "DELETE" do not occur in the Notifications
+  Protocol TR or ED (`spec_quotes.md` §4c). §2.2,
+  https://solidproject.org/TR/notifications-protocol#subscription-server-subscription-request-methods:
+  > Subscription Servers MUST support the GET, HEAD, OPTIONS, and POST methods [RFC9110] on the subscription service.
+- **Spec (WebhookChannel2023 §1.1, goals),** https://solid.github.io/notifications/webhook-channel-2023#goals:
+  > Unsubscribing from a WebHook - Unlike websockets, where sockets can simply be closed by the client, if a notifications receiver wants to unsubscribe from a webhook, it must alert the subscription server.
+
+  (stated as a goal, with open issue solid/notifications#145 "Define unsubscribing").
+- **Spec position:** **silent** on an unsubscribe method, on who may use it,
+  and on an owner listing channels on their resources.
+- **CSS source:** `NotificationUnsubscriber.ts` L23–32 (no credentials
+  check; 205 via `ResetResponseDescription.ts` L8); wired in
+  `config/http/notifications/base/http.json` L46–55. No listing endpoint
+  (`spec_quotes.md` §11 j).
+- **Verdict:** consistent (silent spec). CSS's unsubscribe is an extension;
+  its only access control is knowledge of the UUID id.
+
+### P3-6. Webhook `sendTo` over http was accepted; notifications are signed as the server
+- **Observed:** appR subscribed with `sendTo` = `http://127.0.0.1:<port>/…`;
+  CSS answered 200 and POSTed every notification there, with
+  `Authorization: DPoP <token>` whose `webid` is
+  `<base>/.notifications/WebhookChannel2023/webId`, and a `DPoP` proof
+  (`htu` = the `sendTo` URL) (40/40 lifecycle runs).
+- **Spec (WebhookChannel2023 §2),** https://solid.github.io/notifications/webhook-channel-2023#channel-type:
+  > The value of the sendTo property MUST be a URI, using the https scheme.
+- **Spec (WebhookChannel2023 §3),** https://solid.github.io/notifications/webhook-channel-2023#auth:
+  > Notification Sender MUST perform authenticated request to sendTo webhook endpoint, using identity provided as sender in the subscription response.
+- **CSS source:** `WebhookChannel2023Type.ts` L54 validates `sendTo` only by
+  cardinality (no scheme check); `WebhookEmitter.ts` L62–97 builds the token
+  and proof (`spec_quotes.md` §11 i).
+- **Verdict:** **DEVIATION** on the https requirement: CSS 7.2.0 accepted and
+  used an http `sendTo` (lab on 127.0.0.1; not predicted, recorded as seen).
+  Authenticated delivery: consistent. The token's `webid` equals the `sender`
+  in every successful Webhook subscription response (checked over all 40
+  lifecycle runs' raw files after the run).

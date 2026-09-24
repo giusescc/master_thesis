@@ -100,3 +100,102 @@ Same categorical outcome in 10/10 runs for every condition:
   information for `person.ttl`. Proxied answers matched direct answers.
 - CSS 7.2.0 with WAC and with ACP sent nothing to the proxy when the ACL/ACR
   changed. Predictions H2.1–H2.6: all matched.
+
+## P3: notifications
+
+**Ran:** full run 1, p3 × {wac, acp} × {default, short, unsub-bob,
+unsub-anonymous, unsub-alice}, 10 reps each (100 runs, 0 failed). Raw:
+[`raw/p3/wac/`](raw/p3/wac/), [`raw/p3/acp/`](raw/p3/acp/). Procedure:
+`HYPOTHESES.md` § P3. Every notification is logged verbatim (`ws_message`,
+`webhook_message`) with its arrival time.
+
+**Instrument addition (after the dry run, before the real runs; commit
+7722269).** In the `short` dry run, the WebSocket connect to the expired
+`receiveFrom` was accepted, which H3.7 had not predicted. To tell whether that
+socket was live, one more step was added: alice modifies `person.ttl` once
+more after that reconnect. The prediction in HYPOTHESES.md was not changed.
+
+Same categorical outcome in 10/10 runs for every condition, on WAC and on ACP
+alike. Lifecycle variants (`default`, `short`):
+
+| Observation | WAC | ACP |
+|---|---|---|
+| appR's 4 subscriptions (WS + Webhook, on `person.ttl` + container) | 200 | 200 |
+| advertised `endAt` − subscription time | 20160 min (`default`), 2 min (`short`) | same |
+| baseline modification received on the `person.ttl` channels | yes (WS and Webhook) | yes |
+| any message in the 3 s after the revoke (an ACL/ACR-change signal) | none | none |
+| any message, at any time, that mentions the `.acl` / `.acr` | none | none |
+| notifications on appR's `person.ttl` channels for alice's 20 post-revoke modifications | **20/20 WS, 20/20 Webhook** | **20/20 WS, 20/20 Webhook** |
+| notifications on the container channels for those 20 modifications | 0 (also 0 for the baseline) | 0 |
+| message type | `Update` (with `object`, `state`, `published`) | same |
+| appR reconnects to the old `receiveFrom` after the revoke | accepted, and it receives the next modification | same |
+| appR's new subscription on `person.ttl` after the revoke (WS / Webhook) | 403 / 403 | 403 / 403 |
+| appR's new subscription on the container after the revoke (WS / Webhook) | 200 / 200 | 200 / 200 |
+| Webhook POSTs: token `webid` | `http://localhost:3100/.notifications/WebhookChannel2023/webId` | `…:3101/…/webId` |
+| Webhook POSTs: `DPoP` proof header present | yes | yes |
+
+Only in `short` (2-min `maxDuration`), about 2.5 min after subscribing:
+
+| Observation | WAC | ACP |
+|---|---|---|
+| notification for a modification after `endAt`, on the open WS / on the Webhook | 0 / 0 | 0 / 0 |
+| the open WS closed by the server by then | no | no |
+| WebSocket connect to the expired `receiveFrom` | **handshake accepted** | **handshake accepted** |
+| … and does that socket receive the next modification | no | no |
+
+- **What "accepted" means here.** The client's WebSocket handshake completed
+  (`ws_connect ok=true`). At the same moment CSS logged an error and never
+  delivered on that socket, and did not close it within the run. One line per
+  run, 10 per config, in
+  [`excerpts/p3-expiry-css-log.txt`](excerpts/p3-expiry-css-log.txt), e.g.
+  `[WebSocketServerConfigurator] {Primary} error: Something went wrong handling a WebSocket connection: Unknown or expired WebSocket channel http://localhost:3100/.notifications/WebSocketChannel2023/e5175abc-…`.
+  The same file shows `KeyValueChannelStorage … has expired.` for each
+  `person.ttl` channel when the post-expiry modification arrived (the expiry
+  is checked when the channel is next looked up). From the client's side, the
+  expired channel can only be told apart from a quiet live one by the absence
+  of messages.
+- **Delivery latency** after revoke, alice's modify response → notification
+  arrival (all 40 lifecycle runs): WebSocket median 3.6 ms (0.6–59.7 ms,
+  n = 800); Webhook median 5.3 ms (2.5–63.6 ms, n = 840). The last
+  notification to reach appR from a channel on the revoked resource arrived
+  26.5–27.0 s after the revoke in every lifecycle run. That is where the
+  procedure stopped modifying, not where delivery stopped.
+- The reconnects (after the revoke and after expiry) send **no credentials**.
+  The `receiveFrom` URL alone was enough to receive after the revoke.
+- appR's Webhook `sendTo` was `http://127.0.0.1:<port>/hook/<label>` (not
+  https). CSS 7.2.0 accepted the subscriptions (200) and POSTed to it. Not
+  predicted; see SPEC_VS_IMPL P3-6.
+- The default 20160-min expiry is recorded from the advertised `endAt` only.
+  14 days cannot be observed within a run.
+
+Unsubscribe variants (a fresh WS channel of appR's on `person.ttl`, no revoke):
+
+| Observation | bob | anonymous | alice |
+|---|---|---|---|
+| appR received before the `DELETE` | yes | yes | yes |
+| `DELETE <channel id>` status (empty body) | **205** | **205** | **205** |
+| appR received the next modification | no | no | no |
+| appR's socket closed by the server | no | no | no |
+
+Identical on WAC and ACP. alice's attempts to find appR's channel **without**
+being told its id (`unsub-alice`, 10/10 on both configs):
+
+| Probe by alice | Status | Contains the channel id? |
+|---|---|---|
+| GET her storage description `/alice/.well-known/solid` | 200 | no |
+| GET the subscription endpoint `/.notifications/WebSocketChannel2023/` | 200 | no |
+| GET `/.notifications/` | 400 (`BadRequestHttpError`, "… GET is not allowed.") | no |
+| DELETE the subscription endpoint | 404 (`NotFoundHttpError`) | appR's channel still delivered afterwards |
+
+She could end the channel only after its id was handed to her
+(`channel_id_handed_to_alice`, a step of the procedure).
+
+**Predictions.** H3.1–H3.6, H3.8, H3.9 and H3.10 matched on both configs.
+**H3.7 was partly wrong.** Its "no further notification after `endAt`" and
+"the open socket is not closed" parts matched. Its "reconnecting to the
+expired `receiveFrom` is refused" part did not hold at the handshake level:
+the handshake was accepted, and the socket then stayed silent (see above).
+The source reading behind H3.7 (`WebSocket2023Listener.canHandle` throws for
+an unknown or expired channel) is consistent with the log line. The error is
+raised after the upgrade, so the client is not refused. This last point is
+inferred from the log plus the observation, not traced line by line.
