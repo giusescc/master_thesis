@@ -114,3 +114,89 @@ bob GETs through the proxy at the end.
 - **H2.6 (config B).** CSS sends no signal to the proxy when the ACL/ACR
   changes. The proxy has no way to learn of the revoke except by expiry.
   Nothing is observed that invalidates the entry early.
+
+## P3: notifications (pre-registered before P3's first run, dry runs included)
+
+**Setup.** CSS 7.2.0 advertises two subscription services in the storage
+description (`/<pod>/.well-known/solid`): WebSocketChannel2023 and
+WebhookChannel2023 (checked read-only before writing this). appR subscribes
+with its own DPoP credentials. Its WebSocket client is Python `websockets`
+15.0.1. Its webhook receiver is a local HTTP server on 127.0.0.1 that logs
+every request in full (the `Authorization`/`DPoP` values are redacted, but
+the decoded claims of the token CSS sends are logged, without the signature).
+
+**Procedure, variants `default` and `short`.** Build the scene. appR opens
+four channels: WebSocket and Webhook on `person.ttl`, and WebSocket and
+Webhook on the run container. Each subscription response is logged in full.
+appR connects to both `receiveFrom` URLs. alice modifies `person.ttl` once
+(a baseline, to show the channels work). alice revokes appR. For 3 s nothing
+else happens (the window in which an ACL/ACR-change signal would arrive).
+Then alice modifies `person.ttl` 20× at 1 s intervals (N3 Patch, one inserted
+triple each). After that:
+(i) appR closes and reconnects to the old `receiveFrom` of the `person.ttl`
+WebSocket channel, and alice modifies once more;
+(ii) appR tries to create new WebSocket and Webhook channels on `person.ttl`
+and on the container.
+In the `short` variant the server runs `css-<config>-short.json`
+(maxDuration = 2 min). After the steps above, the run waits until 2.5 min
+after subscription. alice modifies once more, and appR tries to reconnect to
+the `receiveFrom`. In `default` the server runs the unchanged config, and
+only the advertised expiry is recorded: 20160 min cannot be waited out within
+a run.
+
+**Procedure, variants `unsub-bob`, `unsub-anonymous`, `unsub-alice`.** Build
+the scene. appR opens a fresh WebSocket channel on `person.ttl` and connects.
+The named actor sends `DELETE` to the channel's id URL (bob with his DPoP
+credentials; anonymous with none; alice with hers). Before that, alice (in
+`unsub-alice`) tries to find the channel without being told its id: she GETs
+the storage description, the subscription endpoint and `/.notifications/`,
+and sends `DELETE` to the subscription endpoint. Every attempt is logged.
+Then alice modifies `person.ttl`, and the run records whether appR still
+receives. No revoke in these variants: they test who can end appR's channel,
+not the revoke. This is recorded behaviour, not framed as an attack.
+
+**Conditions.** p3 × {wac, acp} × {default, short, unsub-bob,
+unsub-anonymous, unsub-alice}, ≥ 10 reps each.
+
+**Predictions** (source readings cite CSS v7.2.0).
+- **H3.1.** All four subscriptions succeed before the revoke. The responses
+  carry `receiveFrom` (WebSocket) and an `endAt` of about subscription time +
+  20160 min (default) or + 2 min (short). Source reading:
+  `NotificationSubscriber.ts` clamps `endAt` to `maxDuration`, default 20160.
+- **H3.2 (the central prediction).** After the revoke, appR's existing
+  `person.ttl` channels keep delivering: **20/20 notifications on the
+  WebSocket and 20/20 on the Webhook**, each with the full activity payload.
+  This holds on WAC and ACP. Source reading: read permission is checked only
+  when subscribing (`NotificationSubscriber.authorize`); the WebSocket connect
+  is not authorised (`WebSocket2023Listener.ts`); and `emit` does not re-check
+  (`ListeningActivityHandler.ts`).
+- **H3.3.** The container channels receive no notification for the 20
+  content modifications of `person.ttl` (the container's membership does not
+  change). Less certain than H3.2.
+- **H3.4.** **Nothing notifies appR that its access ended.** No message
+  arrives on any appR channel in the 3 s after the revoke, and no later
+  message refers to the ACL/ACR. The ACL/ACR is a different resource from
+  `person.ttl`, and appR has no channel on it.
+- **H3.5.** After the revoke, appR can reconnect to the old `receiveFrom`,
+  and it receives the next modification.
+- **H3.6.** After the revoke, a new subscription by appR on `person.ttl` is
+  refused with **403** (both channel types, both configs). A new subscription
+  on the container succeeds (appR still has Read on the container).
+- **H3.7 (short).** After `endAt`, no further notification arrives on either
+  channel type. The open WebSocket is **not** closed by the server within the
+  observation window. Source reading: `WebSocket2023Storer.ts` sweeps expired
+  sockets every 60 min. Reconnecting to the expired `receiveFrom` is refused.
+- **H3.8 (unsub-*).** `DELETE` on the channel id succeeds with **205** for
+  bob, for an anonymous client and for alice. After it, appR receives no
+  further notification. The WebSocket is not closed by the server. Source
+  reading: `NotificationUnsubscriber.ts` has no credentials check and returns
+  205.
+- **H3.9 (unsub-alice).** Without being told the id, alice cannot find
+  appR's channel. The storage description and the subscription endpoint's
+  GET describe channel *types* only, and no endpoint lists channels
+  (`/.notifications/` is not 2xx). `DELETE` on the subscription endpoint does
+  not end appR's channel. She needs the id from appR, out of band.
+- **H3.10.** Webhook POSTs from CSS carry `Authorization: DPoP <token>` and a
+  `DPoP` proof. The token's `webid` is
+  `<base>/.notifications/WebhookChannel2023/webId`. Source reading:
+  `WebhookEmitter.ts`.
