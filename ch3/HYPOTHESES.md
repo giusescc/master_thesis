@@ -334,3 +334,97 @@ with the same memory.
 - **H6.6.** Nothing from the server reaches the memory. The only
   revoke-related signal appR gets is the 403 on its own direct GET, which the
   memory never makes.
+
+## P7: withdrawal notice (pre-registered before P7's first run, dry runs included)
+
+**Mechanism: a prototype written for this experiment, not a Solid or CSS
+feature.** When alice revokes, she sends each recipient a "withdrawal notice"
+to its LDN inbox (Linked Data Notifications, W3C REC 2017; `spec_quotes.md`
+§8). Each recipient runs a handler that polls its own inbox.
+
+**Recipients and their stores.** Both appR and bob are recipients in P7 (in
+P1–P6 bob was the control). Before the revoke, each builds a P5 aggregator
+store (policy **naive**, so any purge comes from the notice and not from a
+403) and a P6 memory (chunks + embeddings, no generation) from `person.ttl`
+and `distractor.ttl`. There are no syncs after the revoke.
+
+**Inbox setup (logged as item b).** Each recipient, with its own
+credentials: creates the container `<pod>ch3-inbox/` (once; it is reused
+across reps, so each profile advertises exactly one inbox), adds
+`<webid> ldp:inbox <…/ch3-inbox/>` to its WebID profile with an N3 Patch, and
+writes the inbox's access document so that alice has **Append only** (WAC:
+`acl:mode acl:Append` on the container; ACP: a policy allowing `acl:Append`
+to alice). The recipient keeps full control.
+
+**Notice payload** (JSON-LD, `application/ld+json`), built only from terms
+fetched in `spec_quotes.md` §10:
+- ODRL: an `odrl:Permission` whose `odrl:target` is `person.ttl`,
+  `odrl:assignee` is the recipient's WebID and `odrl:action` is `odrl:read`
+  (the scope: which resource, which action, whose permission);
+- DPV: `dpv:hasRecipient` (the recipient) and `dpv:hasDataSubject`
+  (`person.ttl#me`, the fictional person the data is about);
+- time: `ch3n:withdrawnAt` (`xsd:dateTime`), and a request
+  `ch3n:requests ch3n:DeleteCopiesOfTarget`. `ch3n:` =
+  `https://example.org/ch3/notice#` is a **local vocabulary of this
+  experiment**, because no fetched ODRL/DPV term covers a withdrawal time or a
+  deletion request.
+
+We deliberately use **no** consent-status or right-exercise term
+(`dpv:ConsentWithdrawn`, `dpv:RightExerciseNotice`). Such a term would assert
+a legal basis or a legal right, and that is for the legal analysis to judge.
+
+**Procedure per rep.** Build the scene (appR and bob can read `person.ttl`).
+appR opens a WebSocketChannel2023 on `person.ttl` (for item c). appR and bob
+build their stores. alice records the recipient list from **her own grant
+log** (item a) and reads the `.acl`/`.acr` of `person.ttl`. alice revokes
+appR **and** bob on `person.ttl`, then reads the access document again. alice
+probes whether she can see who holds notification subscriptions on
+`person.ttl` (item c: storage description, subscription endpoint,
+`/.notifications/`, searching for appR's WebID and channel id). For each
+recipient, alice discovers the inbox (LDN §3.1: first the `Link rel=inbox`
+header on the WebID profile, then `ldp:inbox` in its RDF), then POSTs the
+notice. Handlers poll every 1 s. A **cooperating** handler deletes the
+aggregator rows and memory chunks whose source is the notice's
+`odrl:target`. A **non-cooperating** handler receives and logs the notice
+but deletes nothing. 5 s after the last notice, the run records, per
+recipient (item d): notice sent time (alice's POST response), received time
+(the handler's GET of the notice), purge completed time, residual
+`person.ttl` rows and chunks, and how many of the 10 P6 questions still
+retrieve a `person.ttl` chunk as top-1. Then alice records **everything she
+can see**: the POST status and headers, a GET of the `Location`, and a GET of
+the inbox.
+
+**Conditions.** p7 × {wac, acp} × {cooperating, non-cooperating}, ≥ 10
+reps each.
+
+**Predictions.**
+- **H7.1 (b).** Inbox creation, the profile patch and the Append-only
+  access document all succeed on WAC and ACP.
+- **H7.2 (a).** The recipient list comes only from alice's own grant log.
+  Before the revoke, the access document names appR and bob; after it,
+  neither. CSS exposes no record of which agents were granted or read
+  `person.ttl` once the document is rewritten.
+- **H7.3 (c).** alice cannot see that appR holds a subscription on
+  `person.ttl`: neither appR's WebID nor its channel id appears in any probe
+  (as P3 H3.9).
+- **H7.4.** Discovery: the WebID profile carries **no** `Link rel=inbox`
+  header, so the header step fails and the RDF step finds `ldp:inbox`. Less
+  certain.
+- **H7.5.** alice's POST to each inbox returns **201** with a `Location`
+  header, in both variants.
+- **H7.6 (cooperating).** Every notice is received and purged within 5 s.
+  Residual `person.ttl` rows = 0 and chunks = 0 for both recipients, the
+  distractor rows and chunks stay, and 0 of 10 questions retrieve a
+  `person.ttl` chunk as top-1. Sent → purged ≤ one poll interval plus
+  processing (≲ 1.5 s).
+- **H7.7 (non-cooperating).** Every notice is received. Residual = 23 rows
+  and 10 chunks per recipient, and 10 of 10 questions still retrieve
+  `person.ttl` as top-1. This is **by construction**, not a finding.
+- **H7.8 (the measurement that matters).** What alice can see is
+  **identical in both variants**: the POST is 201 with a `Location`, her GET
+  of the `Location` is 403 (she has Append, not Read), and her GET of the
+  inbox is 403. No acknowledgement of receipt or purge reaches her, and
+  nothing lets her tell a cooperating recipient from a non-cooperating one.
+  LDN's 201 means only that the notification resource was created. We add no
+  acknowledgement mechanism; we record only that none exists.
+- **H7.9.** WAC and ACP give the same categorical outcome per variant.
