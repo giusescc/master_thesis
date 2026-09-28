@@ -298,3 +298,50 @@ the deleted resource too.
   already records that CSS gives the owner 404 there.)
 - Predictions H5.1–H5.6: all matched. H5.5's least certain part (deleted →
   possibly 404) resolved as 403.
+
+## P6: agent memory
+
+**Ran:** full run 1, p6 × {wac, acp} × rag, 10 reps each (20 runs, 0
+failed). Raw: [`raw/p6/wac/`](raw/p6/wac/), [`raw/p6/acp/`](raw/p6/acp/).
+Models: Ollama 0.34.4, `nomic-embed-text:latest` (`0a109f42…`) and
+`qwen2.5:3b` Q4_K_M (`357c53fb…`), pinned in
+[`../config/ollama-models.txt`](../config/ollama-models.txt), checked at the
+start of every run (`models` line). Generation used temperature 0 and seed
+= the run seed. The memory is recipient-side code written for this
+experiment (`lib/memory.py`). It was built once, while appR could read, and
+never re-synced.
+
+**Instrument addition (after the first dry run, before the real runs; commit
+1b30b05).** The rank of the chunk that holds each answer is now logged
+(`after_answer_chunk_rank`). "Some top-k chunk comes from `person.ttl`" was
+weaker than what H6.3 predicts.
+
+Same categorical outcome in 10/10 runs per config, identical on WAC and ACP:
+
+| Observation | WAC | ACP |
+|---|---|---|
+| chunks in the memory from `person.ttl`, before / after the revoke | 10 / 10 | 10 / 10 |
+| chunks in total after the revoke | 20 | 20 |
+| appR's direct GET of `person.ttl` after the revoke | 403 | 403 |
+| questions (of 10) whose top-1 chunk is from `person.ttl`, after the revoke | **10** | **10** |
+| questions whose answer-holding `person.ttl` chunk is in the top 4 | **10** (rank 1 for 9; rank 2 for F03) | same |
+| retrieval before vs after the revoke (ids, order, scores) | identical | identical |
+| generated answers containing the fixture value, before / after (secondary) | 10 / 10 in every run | 10 / 10 |
+
+- F03 ("Who is Tesmer Quillon's employer?"): the top-1 chunk was the
+  `employeeId` chunk (`person.ttl#c04`), and the `worksFor` chunk that holds
+  the answer was rank 2. For F07 and F10, the 4th hit was the distractor's
+  chunk of the same kind. All other hits were `person.ttl` chunks.
+- **Variance across reps (secondary evidence):** none. Over all 20 runs, each
+  question produced exactly one distinct answer text, one score tuple and one
+  ranking after the revoke. Answers before and after the revoke were
+  identical in every run (10/10).
+- Answers after the revoke, verbatim (the same in every run), e.g. F01
+  `Tesmer Quillon's home address is Gruenmattweg 173, Lindwil, with a postal code of 9107.`;
+  F06 `Tesmer Quillon's employee ID is QI-58213.`; F09 `Oriane Pelletaz`.
+  All 10 answers and their prompts are in each run's `generation` lines.
+- Nothing from CSS reached the memory. The 403 went to a direct GET that the
+  memory itself never makes.
+- **Predictions:** H6.1–H6.6 all matched. H6.3's least certain part (top-1
+  from `person.ttl` for every question) held. The answer-holding chunk was
+  not top-1 for F03, and H6.3 predicted only "in the top 4" for that.

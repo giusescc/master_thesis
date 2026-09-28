@@ -301,3 +301,20 @@ WebhookChannel2023 (Draft CG Report 0.1).
   the text quoted.
 - **Verdict:** consistent (silent spec). Outside the server's reach by
   design; no CSS source is involved.
+
+## P6: agent memory
+
+### P6-1. An index built during access keeps answering after the revoke
+- **Observed:** a memory built by appR before the revoke still retrieved the
+  `person.ttl` chunks and produced the correct fixture values after the
+  revoke. At the same moment, CSS 7.2.0 (WAC and ACP) answered appR's direct
+  GET with 403 (20/20; OBSERVATIONS § P6).
+- **Spec (WAC §5.3.1),** https://solidproject.org/TR/wac#server-read-operation:
+  > When an operation requests to read a resource, the server MUST match an Authorization allowing the acl:Read access privilege on the resource.
+- **Spec position:** access control applies to *operations on the server*.
+  None of the Solid Protocol, WAC or ACP sections quoted in
+  `spec_quotes.md` §1–3 has text on derived copies (indexes, embeddings)
+  held by a client. No dedicated search for such text was recorded.
+  Reading: **silent**, scoped to the text quoted.
+- **Verdict:** consistent for CSS (the server-side denial is what §5.3.1
+  requires). The memory is outside the server's reach, as in P5-2.
