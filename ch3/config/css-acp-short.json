@@ -1,0 +1,17 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+  "import": [ "css:config/file-acp.json" ],
+  "@graph": [
+    { "comment": "Chapter 3, config acp with short channel expiry: identical to css-acp.json except maxDuration = 2 (minutes) on both notification subscribers. The CSS default is 20160 (NotificationSubscriber)." },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:WebSocket2023Subscriber" },
+      "overrideParameters": { "@type": "NotificationSubscriber", "maxDuration": 2 }
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:WebhookSubscriber" },
+      "overrideParameters": { "@type": "NotificationSubscriber", "maxDuration": 2 }
+    }
+  ]
+}

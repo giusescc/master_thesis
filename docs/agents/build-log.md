@@ -2,6 +2,12 @@
 
 Newest first. One short entry per Slice: what was built, why, where, and the decisions to respect.
 
+## 2026-09-28: Chapter 3 revocation half-life, P1–P7 (Legionary revocation, branch worktree-revocation)
+- **What:** `ch3/` measures what happens to shared data after alice revokes access, on CSS 7.2.0 WAC :3100 and ACP :3101: P1 direct GET, P2 nginx caching, P3 notifications, P4 Comunica, P5 aggregator, P6 Ollama RAG memory, P7 LDN withdrawal notice. `npm run exp:setup|p1..p7|check|compare|stop`. Two full runs, 10 reps × 32 conditions each. `exp:check` and `exp:compare` exit 0.
+- **Why:** evidence for the thesis on what the server *enforces* after a revoke (the server stops at once) and what it cannot reach (caches, open channels, copies, indexes, notices), as input to Giuseppe's legal analysis (no legal conclusions here).
+- **Where:** `ch3/README.md` (reproduction), `ch3/HYPOTHESES.md`, `ch3/results/{OBSERVATIONS,SPEC_VS_IMPL,INTERPRETATION_NOTES,ENVIRONMENT}.md`, raw JSONL in `ch3/results/raw/` (+ `MANIFEST.sha256`, `EXCLUDED.tsv`), `ch3/lib/`, `ch3/tools/{check,compare}.py`.
+- **Decisions:** raw files are never deleted or rewritten: exclusions go in `EXCLUDED.tsv` and replacements are new reps (`--start-rep 11`). `exp:check` rejects runs where the wall clock outran the monotonic clock by > 5 s (Mac sleep). Timings come from full run 1 only. P6 uses qwen2.5:3b (the User chose it over the Spec's 7b on 2026-09-24), pinned by digest. The P7 notice uses ODRL + dpv:hasRecipient/hasDataSubject, with no consent or right terms, to avoid asserting a legal basis. The fixture is a passport-renewal appointment, not health data. P8 (ESS) and Ch2 `04` remain out of scope.
+
 ## 2026-09-22: Chapter 2 export (Legionary export, branch worktree-export)
 - **What:** `export/` is git-ignored. `export/ch2/` in the main checkout holds unmodified copies (destination ← source; no README amended): `RESULTS.md` ← `RESULTS.md`; `CH2_exp00_README.md` ← `experiments/00_hello_pod/README.md`; `CH2_exp01_README.md` ← `experiments/01_share_revoke/README.md`; `CH2_exp02_README.md` ← `experiments/02_odrl_consent/README.md`; `CH2_exp03_README.md` ← `experiments/03_portability/README.md`; `RELATED_WORK.md` ← `experiments/02_odrl_consent/RELATED_WORK.md`.
 - **Why:** Giuseppe needs the evidence write-ups next to his thesis Chapter 2 draft without committing duplicates.

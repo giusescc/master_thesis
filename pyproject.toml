@@ -10,6 +10,7 @@ dependencies = [
     "python-dotenv==1.1.1",
     "jwcrypto==1.5.6",
     "PyJWT==2.10.1",
+    "websockets==15.0.1",
 ]
 
 [project.optional-dependencies]
@@ -18,7 +19,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "ch3/tests"]
 addopts = "-ra"
 
 [tool.setuptools.packages.find]

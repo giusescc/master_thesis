@@ -61,6 +61,11 @@ ODRL policy blurs the central finding.
   (alice2) · `:3002` static host for a provider-independent WebID.
 - Start with `./start.sh` (resume) or `./start.sh --reset` (clean room).
   `./start.sh --stop` stops everything.
+- **Chapter 3** runs its own two CSS 7.2.0 processes, independent of the
+  above: `:3100` WAC and `:3101` ACP (alice, appr, bob on each), started with
+  `npm run exp:setup [-- --reset]`, stopped with `npm run exp:stop`. P2 adds
+  nginx in Docker on `:3180–3183`; P6/P7 use Ollama on `127.0.0.1:11434`.
+  See `ch3/README.md`.
 
 ## Users
 
@@ -83,6 +88,9 @@ experiments/NN_name/ README.md (hypotheses + result), run.py, evidence/
 figures/             SVG figures, drawn from observed results
 prompts/             every instruction given, verbatim, with outcomes
 RESULTS.md           the cross-experiment table and plain-language summary
+ch3/                 Chapter 3, revocation half-life (P1–P7): HYPOTHESES.md,
+                     config/, fixtures/, lib/, phases/, tools/, results/
+                     (raw JSONL, OBSERVATIONS, SPEC_VS_IMPL, INTERPRETATION_NOTES)
 ```
 
 ## Gotchas already paid for
@@ -117,3 +125,5 @@ The build is complete only when, from a clean checkout:
 `04_continuous_access` (DMA Art. 6(9), Solid Notifications) and
 `05_onward_sharing` (Data Act Art. 5) were deliberately deferred pending review
 of the first four. `solidlib/` is structured so they drop in cheaply.
+
+04 remains deferred. Ch3 P3 tests the same mechanism (Solid Notifications) from the revocation angle, not the continuous-access/portability angle; P3 setup and results may be reusable if 04 is revisited.

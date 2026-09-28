@@ -1,0 +1,47 @@
+# Chapter 3 fixture: the resource alice revokes.
+#
+# A SYNTHETIC record of a FICTIONAL person. Every value below was invented for
+# this experiment (names, street, postcode, company, identifiers), so a correct
+# answer about it can only come from this pod resource, not from a language
+# model's training data. None of the ten facts is special-category data; the
+# appointment is a passport renewal (a medical appointment was deliberately not
+# used, because it could reveal health information).
+#
+# Fact ids F01..F10 match ch3/fixtures/questions.json.
+
+@prefix schema: <https://schema.org/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix ch3: <https://example.org/ch3/fixture#>.
+
+<#me>
+    a schema:Person;
+    schema:name "Tesmer Quillon";
+    # F01 address
+    schema:address [
+        a schema:PostalAddress;
+        schema:streetAddress "Gruenmattweg 173";
+        schema:postalCode "9107";
+        schema:addressLocality "Lindwil"
+    ];
+    # F02 date of birth
+    schema:birthDate "1983-11-04"^^xsd:date;
+    # F03 employer
+    schema:worksFor [ a schema:Organization; schema:name "Quarrowby Instruments GmbH" ];
+    # F04 job title
+    schema:jobTitle "Senior Calibration Planner";
+    # F05 email
+    schema:email "tesmer.quillon@quarrowby.example";
+    # F06 employee id
+    ch3:employeeId "QI-58213";
+    # F07 appointment
+    ch3:appointment [
+        a schema:Event;
+        schema:name "Passport renewal appointment";
+        schema:startDate "2026-10-13T09:40:00"^^xsd:dateTime
+    ];
+    # F08 library card
+    ch3:libraryCardNumber "LB-448-2917";
+    # F09 emergency contact
+    ch3:emergencyContact [ a schema:Person; schema:name "Oriane Pelletaz" ];
+    # F10 bicycle frame number
+    ch3:bicycleFrameNumber "WX-77310-K".

@@ -1,0 +1,7 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+  "import": [ "css:config/file.json" ],
+  "@graph": [
+    { "comment": "Chapter 3, config wac: CSS 7.2.0 css:config/file.json unchanged (WAC, file backend, notifications from http/notifications/all.json)." }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "ch3-p4-comunica",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chapter 3 P4: Comunica link traversal as appR, before and after the revoke",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@comunica/query-sparql-link-traversal-solid": "0.8.0",
+    "jose": "6.2.12"
+  }
+}
