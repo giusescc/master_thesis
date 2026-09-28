@@ -27,3 +27,8 @@ experiments/01_share_revoke/bob_local_copy/
 
 # Generated: local export copies (e.g. export/ch2/ for thesis chapter 2)
 export/
+
+# Chapter 3: server state, credentials, logs and dry-run output (never commit)
+ch3/.state/
+ch3/results/scratch/
+ch3/phases/p4_comunica/node_modules/

@@ -1,0 +1,32 @@
+# Chapter 3 distractor: a resource appR KEEPS read access to throughout.
+#
+# The same kinds of facts as person.ttl, about a DIFFERENT fictional person with
+# different invented values. It lets P4-P7 tell "data from the revoked resource"
+# apart from "similar-looking data the recipient may still hold".
+
+@prefix schema: <https://schema.org/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix ch3: <https://example.org/ch3/fixture#>.
+
+<#me>
+    a schema:Person;
+    schema:name "Liesel Omandyke";
+    schema:address [
+        a schema:PostalAddress;
+        schema:streetAddress "Kornhaldenstrasse 12";
+        schema:postalCode "6315";
+        schema:addressLocality "Orbach"
+    ];
+    schema:birthDate "1990-02-17"^^xsd:date;
+    schema:worksFor [ a schema:Organization; schema:name "Veltrane Logistics AG" ];
+    schema:jobTitle "Route Scheduling Analyst";
+    schema:email "l.omandyke@veltrane.example";
+    ch3:employeeId "VL-20476";
+    ch3:appointment [
+        a schema:Event;
+        schema:name "Driving licence renewal appointment";
+        schema:startDate "2026-11-02T14:15:00"^^xsd:dateTime
+    ];
+    ch3:libraryCardNumber "LB-903-1164";
+    ch3:emergencyContact [ a schema:Person; schema:name "Bertil Samsundt" ];
+    ch3:bicycleFrameNumber "KP-40518-D".

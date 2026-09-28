@@ -1,0 +1,4 @@
+# role  name  digest (sha256, from Ollama /api/tags). Pulled 2026-09-28 with Ollama 0.34.4.
+# qwen2.5:3b = Q4_K_M, 3.1B parameters (the User chose 3b over 7b on 2026-09-24).
+embed nomic-embed-text:latest 0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f
+generate qwen2.5:3b 357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b

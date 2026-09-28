@@ -7,6 +7,19 @@
   "engines": {
     "node": ">=18"
   },
+  "scripts": {
+    "exp:setup": "bash ch3/tools/setup.sh",
+    "exp:stop": "bash ch3/start.sh --stop",
+    "exp:p1": "uv run python -m ch3.phases.p1_direct.run",
+    "exp:p2": "uv run python -m ch3.phases.p2_caching.run",
+    "exp:p3": "uv run python -m ch3.phases.p3_notifications.run",
+    "exp:p4": "uv run python -m ch3.phases.p4_comunica.run",
+    "exp:p5": "uv run python -m ch3.phases.p5_aggregator.run",
+    "exp:p6": "uv run python -m ch3.phases.p6_memory.run",
+    "exp:p7": "uv run python -m ch3.phases.p7_withdrawal.run",
+    "exp:check": "uv run python -m ch3.tools.check",
+    "exp:compare": "uv run python -m ch3.tools.compare"
+  },
   "dependencies": {
     "@solid/community-server": "7.2.0"
   }

@@ -1,0 +1,5 @@
+[
+  { "email": "alice@ch3.example", "password": "ch3-alice-lab-password", "pods": [ { "name": "alice" } ] },
+  { "email": "appr@ch3.example", "password": "ch3-appr-lab-password", "pods": [ { "name": "appr" } ] },
+  { "email": "bob@ch3.example", "password": "ch3-bob-lab-password", "pods": [ { "name": "bob" } ] }
+]
