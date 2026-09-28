@@ -286,3 +286,51 @@ Content-Length, Keep-Alive, Connection).
   certain part is the deleted resource, which could instead be 404.
 - **H5.6.** appR's `distractor.ttl` rows stay in both variants (its access
   is unchanged).
+
+## P6: agent memory (pre-registered before P6's first run, dry runs included)
+
+**Models** (Ollama 0.34.4 on 127.0.0.1, pinned by digest in
+`config/ollama-models.txt`; the run refuses a digest mismatch):
+`nomic-embed-text:latest` for embeddings, `qwen2.5:3b` (Q4_K_M) for
+generation. *Model choice:* the Spec names `qwen2.5:7b-instruct`; the User
+chose the smaller `qwen2.5:3b` on 2026-09-24. Generation: temperature 0,
+seed = the fixed run seed.
+
+**Memory** (`lib/memory.py`), acting as appR: GET `person.ttl` and
+`distractor.ttl`, split each into one chunk per top-level fact of the person
+(prefixed with the person's name; 10 facts each, so 20 chunks), embed them and
+store chunks + vectors in SQLite. The memory is built once, before the
+revoke, and is never re-synced. That is the scenario: an agent's memory
+built while access was valid.
+
+**Procedure.** Build the scene and the memory. Ask the 10 fixed questions
+(`fixtures/questions.json`, each answerable only from `person.ttl`): for each,
+retrieval (top k = 4 by cosine similarity: chunk ids, scores, and whether the
+chunk comes from `person.ttl`), then generation from those 4 chunks (prompt
+and answer logged verbatim). alice revokes appR on `person.ttl`, and appR's
+direct GET (logged) confirms the revoke. The 10 questions are asked again
+with the same memory.
+
+**Conditions.** p6 × {wac, acp} × {rag}, ≥ 10 reps each.
+
+**Predictions.**
+- **H6.1.** The memory holds 20 chunks, 10 of them from `person.ttl`, before
+  and after the revoke. Nothing removes or flags them.
+- **H6.2.** appR's direct GET after the revoke is 403 (as in P1).
+- **H6.3 (primary).** After the revoke, for **each** of the 10 questions,
+  the top 4 include the `person.ttl` chunk holding the answer. For the top-1
+  chunk we predict `person.ttl` for all 10 questions. This is the least
+  certain part, because a distractor chunk of the same kind (for example the
+  other person's appointment) could rank first.
+- **H6.4.** Retrieval is the same before and after the revoke (the same chunk
+  ids in the same order), and the same across reps and configs. The config
+  cannot matter once the memory is built.
+- **H6.5 (secondary).** Generation after the revoke gives the correct
+  fixture value (the `match` substring) for at least 8 of the 10 questions.
+  The answers are the same as before the revoke. If answers vary across reps
+  despite temperature 0 and a fixed seed, the variance is logged as an
+  observation and not rerun. Generation correctness is kept out of the
+  categorical `outcome` that `exp:compare` checks.
+- **H6.6.** Nothing from the server reaches the memory. The only
+  revoke-related signal appR gets is the 403 on its own direct GET, which the
+  memory never makes.
