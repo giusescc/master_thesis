@@ -416,3 +416,46 @@ or that has no inbox.
 
 **Predictions:** H7.1–H7.9 all matched. H7.4 (no `Link rel=inbox` on the
 profile) was the less certain one, and it held.
+
+## Full run 2
+
+**Ran:** every condition again, full_run=2, from a fresh `npm run exp:setup
+-- --reset` on 2026-09-28 (32 conditions, P1–P7, WAC and ACP). With the
+make-up reps below, each condition has 10 completed, counted runs (320 runs,
+0 failed). `npm run exp:check` exits 0.
+
+**Result:** `npm run exp:compare` exits 0. For all 32 conditions, the set of
+categorical `outcome` values in full run 2 equals the set in full run 1 (one
+distinct outcome per condition in both runs), and the sha256 manifest shows no
+raw file changed after it was written.
+
+**Runs excluded: 15, hit by a system suspend.** During full run 2 the Mac
+went into clamshell sleep several times (macOS `pmset` log, 2026-09-28). A
+suspend freezes the process's monotonic clock but not the wall clock, so any
+timed window in such a run (poll intervals, 10 s observation windows, expiry
+waits) is invalid. `exp:check` now flags every run whose wall-clock span
+exceeds its monotonic span by more than 5 s. 15 run-2 files crossed that
+threshold (gaps from 13.5 s to 3172.0 s) in p3/acp/{short, unsub-anonymous,
+unsub-alice ×2}, p4/wac/b, p5/acp/403-aware, p5/wac/{naive ×3, 403-aware}
+and p6/wac/rag ×5. They are kept on disk and listed with their gap in
+`raw/EXCLUDED.tsv`, never deleted. Where they completed, their categorical
+outcome matched full run 1 anyway. The criterion was added after these runs
+happened, as an instrument correction (commit 51983dd). It is not a finding
+about CSS.
+
+**One of them failed:** `p4/wac/20260928T120609.411Z-b-r05.jsonl`. CSS
+returned HTTP 500 `Lock expired after 6000ms` on the token endpoint, just
+after a 143.1 s suspend. We **infer** that the suspend caused it (the lock
+timer ran out while the process was frozen). This was not reproduced and is
+not proven. No other run, in either full run, hit this error.
+
+**Make-up reps.** Each excluded run was replaced by a new rep with a new rep
+number (r11 and up, `--start-rep 11`, CH3_FULL_RUN=2), run under
+`caffeinate -dis` with the lid open: p3/acp/short r11 (commit 57a2b0d) and 14
+more (commit bcd0031). All completed with no failure. The p3/acp/short r11 file
+was first committed while still being written (647120e, labelled WIP); 57a2b0d
+holds the complete file, and that is the version recorded in the manifest.
+
+**Timings.** The distributions in the phase sections above come from full run
+1 only. Full run 2 is used for the categorical comparison, not to widen the
+timing distributions.
