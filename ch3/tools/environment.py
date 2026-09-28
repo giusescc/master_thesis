@@ -81,6 +81,17 @@ def ollama_section() -> str:
     out = f"- `ollama --version`: `{version}`\n"
     if OLLAMA_MODELS_FILE.exists():
         out += "- `ollama list` (model name, digest):\n\n" + block(sh(["ollama", "list"]))
+        tags = sh(["curl", "-s", "http://127.0.0.1:11434/api/tags"])
+        try:
+            installed = {m["name"]: m["digest"] for m in json.loads(tags)["models"]}
+        except (ValueError, KeyError):
+            installed = {}
+        out += "\n- Full sha256 digests (pinned in `config/ollama-models.txt` vs installed, from `/api/tags`):\n"
+        for line in OLLAMA_MODELS_FILE.read_text().splitlines():
+            if line.strip() and not line.startswith("#"):
+                role, name, digest = line.split()
+                got = installed.get(name, "not available")
+                out += f"  - {role} `{name}`: pinned `{digest}`, installed `{got}` ({'match' if got == digest else 'MISMATCH'})\n"
     else:
         out += "- models: not used yet (P6 not built)\n"
     return out
