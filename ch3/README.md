@@ -64,11 +64,11 @@ full run 1 (10/10 identical per condition); see OBSERVATIONS.md for details.
 
 | Phase | Conditions (× wac, acp) | Expected outcome (full run 1) |
 |---|---|---|
-| **P1** direct path | `direct` | appR's first GET after the revoke is 403; bob (control) always 200. Time-to-denial ≈ 33–39 ms (bounded by the 50 ms poll) |
+| **P1** direct path | `direct` | appR's first GET after the revoke is 403; bob (control) always 200. Time-to-denial: medians 32.8 ms (ACP) and 38.9 ms (WAC), range 28.7–43.7 ms (bounded by the 50 ms poll) |
 | **P2** HTTP caching | `proxyA`, `proxyB` | CSS sends no Cache-Control. Proxy A (honours origin) caches nothing. Proxy B (**deliberately permissive**) serves the revoked fixture for ~60 s, also to an anonymous client |
 | **P3** notifications | `default`, `short`, `unsub-bob`, `unsub-anonymous`, `unsub-alice` | Existing channels deliver 20/20 after the revoke; no ACL-change signal; new subscription 403; DELETE by anyone 205; after a 2-min expiry the handshake is accepted but silent |
 | **P4** Comunica 0.8.0 | `a`, `a-invalidate`, `b` | Every engine re-requests `person.ttl` (403) and the query fails as a whole |
-| **P5** aggregator | `naive`, `403-aware` | Naive keeps 23/23 rows; 403-aware deletes them within ~25 ms; "withdrawn", "never granted" and "deleted" give identical 403s |
+| **P5** aggregator | `naive`, `403-aware` | Naive keeps 23/23 rows; 403-aware deletes them after a median of ~21–25 ms (max ~47 ms); "withdrawn", "never granted" and "deleted" give identical 403s |
 | **P6** agent memory | `rag` | The pre-revoke memory still retrieves `person.ttl` as top-1 for 10/10 questions and answers 10/10 correctly |
 | **P7** withdrawal notice | `cooperating`, `non-cooperating` | Notice (LDN, ODRL + DPV) received in ~1 s; cooperating purges all, non-cooperating nothing (by construction); alice's view is identical either way |
 
