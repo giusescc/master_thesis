@@ -345,3 +345,74 @@ Same categorical outcome in 10/10 runs per config, identical on WAC and ACP:
 - **Predictions:** H6.1–H6.6 all matched. H6.3's least certain part (top-1
   from `person.ttl` for every question) held. The answer-holding chunk was
   not top-1 for F03, and H6.3 predicted only "in the top 4" for that.
+
+## P7: withdrawal notice
+
+**Ran:** full run 1, p7 × {wac, acp} × {cooperating, non-cooperating}, 10
+reps each (40 runs, 0 failed). Raw: [`raw/p7/wac/`](raw/p7/wac/),
+[`raw/p7/acp/`](raw/p7/acp/). The notice, the handlers and the purge are a
+**prototype written for this experiment**, not a Solid or CSS feature. Both
+appR and bob are recipients in P7. Both build a P5 aggregator store
+(policy naive) and a P6 memory before the revoke. Every notice is logged
+verbatim (`notice_sent`, `notice_received`).
+
+Same categorical outcome in 10/10 runs for every condition, identical on WAC
+and ACP.
+
+**(a) Where alice's recipient list comes from.** From **her own grant log**
+(the `grant` lines the run wrote), logged as `recipient_list` with
+`server_exposed=false`. Reading `person.ttl`'s access document: before the
+revoke it names appR and bob; after the revoke it names **neither**. After
+the revoke, nothing alice can read on CSS 7.2.0 names the former recipients.
+
+**(b) The inbox setup each recipient needed.** Each recipient has a
+container `<pod>ch3-inbox/`. It was created (201) during the P7 dry runs and
+already existed in all 80 full-run setups. In every run, each recipient added
+`ldp:inbox` to its WebID profile with an N3 Patch (205), and rewrote the
+inbox's access document so that alice has **`acl:Append` only** (WAC `.acl`,
+ACP `.acr`: 205 in 80/80). The recipient keeps full control. The full documents are in the
+`inbox_setup` lines. Discovery by alice: the profile's `HEAD` response
+carried **no** `Link rel=inbox` header in any run, and the `ldp:inbox` triple
+in the profile's RDF gave the inbox.
+
+**(c) Can alice see who holds notification subscriptions on her resource?**
+**No**, in 40/40 runs. appR held a WebSocket channel on `person.ttl`. Neither
+appR's WebID nor the channel id appeared in her storage description (200),
+the subscription endpoint (200) or `/.notifications/` (400). This repeats P3.
+
+**(d) Per recipient** (medians over 10 runs; min–max):
+
+| | cooperating, WAC | cooperating, ACP | non-cooperating, WAC | non-cooperating, ACP |
+|---|---|---|---|---|
+| notice received by the handler | yes (appR, bob) | yes | yes | yes |
+| sent → received (ms), appR | 977 (909–1018) | 956 (839–976) | 980 (916–993) | 973 (913–1072) |
+| sent → purge completed (ms), appR | 978 (911–1019) | 956 (842–978) | n/a | n/a |
+| residual `person.ttl` rows / chunks, each recipient | **0 / 0** | **0 / 0** | 23 / 10 | 23 / 10 |
+| distractor rows / chunks kept | 23 / 10 | 23 / 10 | 23 / 10 | 23 / 10 |
+| questions (of 10) still retrieving `person.ttl` as top-1 | 0 | 0 | 10 | 10 |
+
+bob's timings are within the same ranges (raw `summary` metrics). The
+sent → received time is set by the handler's 1 s polling, and in this
+procedure it came out close to a full interval. It is a property of our
+handler, not of CSS. The non-cooperating residual is **by construction**
+(that handler was written not to purge). It is not a finding.
+
+**What alice can see: identical in both variants.** For each recipient, in
+40/40 runs:
+
+| alice's observation | cooperating | non-cooperating |
+|---|---|---|
+| POST of the notice to the inbox | 201, `Location` set, empty body | same |
+| response header names (Date, Location, Content-Length, Keep-Alive, Connection set aside) | accept-ranges, access-control-allow-credentials, access-control-allow-origin, access-control-expose-headers, link, transfer-encoding, vary, x-powered-by | same |
+| her GET of the `Location` (the stored notice) | 403 | 403 |
+| her GET of the inbox | 403 | 403 |
+| any message back to alice | none | none |
+
+Nothing alice received distinguished a recipient that deleted its copies
+from one that kept them. No acknowledgement mechanism was added, and none
+exists in this setup. The mechanism cannot tell alice whether a notice was
+acted on, and it cannot reach a recipient that is not in her own grant log
+or that has no inbox.
+
+**Predictions:** H7.1–H7.9 all matched. H7.4 (no `Link rel=inbox` on the
+profile) was the less certain one, and it held.

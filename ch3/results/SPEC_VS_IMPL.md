@@ -318,3 +318,64 @@ WebhookChannel2023 (Draft CG Report 0.1).
   Reading: **silent**, scoped to the text quoted.
 - **Verdict:** consistent for CSS (the server-side denial is what §5.3.1
   requires). The memory is outside the server's reach, as in P5-2.
+
+## P7: withdrawal notice
+
+LDN is the W3C Recommendation of 2 May 2017 (`spec_quotes.md` §8). The Solid
+Protocol requires LDN Receiver conformance (§1f).
+
+### P7-1. The inbox accepted the notice with 201 + Location
+- **Observed:** CSS 7.2.0 (WAC and ACP) answered alice's POST to each
+  recipient's inbox with 201, a `Location` and an empty body (80/80 POSTs).
+- **Spec (LDN §3.3.1),** https://www.w3.org/TR/ldn/#receiving-notifications:
+  > Upon receipt of a POST request, if the notification resource was processed successfully, receivers MUST respond with status code 201 Created and the Location header set to the URL from which the notification data can be retrieved (see Consumer). If the request was queued to be processed asynchronously, the receiver MUST respond with a status code of 202 Accepted and include information about the status of the request in the body of the response.
+- **Spec (Solid Protocol §6),** https://solidproject.org/TR/protocol#server-ldn:
+  > A Solid server MUST conform to the LDN specification by implementing the Receiver parts to receive notifications and make Inbox contents available [LDN].
+- **Spec position:** requires. **Verdict:** consistent.
+
+### P7-2. 201 is the only thing the sender learns; no acknowledgement of processing
+- **Observed:** alice's view was identical for cooperating and
+  non-cooperating recipients (40/40): 201, then 403 on the `Location` and on
+  the inbox (she has Append only).
+- **Spec (LDN §3.4),** https://www.w3.org/TR/ldn/#consumer:
+  > Fetching the individual notifications — if any, how many, or according to a particular criteria (e.g., content-length, timestamp) — is at the discretion of the consumer.
+- **Spec (LDN §3.3.2),** https://www.w3.org/TR/ldn/#receiving-inbox-contents:
+  > A successful GET request on the Inbox MUST return a HTTP 200 OK with the URIs of notifications, subject to the requester’s access (returning 4xx error codes as applicable).
+- **Spec position:** LDN defines no acknowledgement that a notice was read or
+  acted on (**silent**; `spec_quotes.md` §8 note). Reading the inbox is
+  "subject to the requester's access", so alice's 403 is consistent.
+- **Verdict:** consistent.
+
+### P7-3. Inbox discovery through the profile's RDF, not a Link header
+- **Observed:** the WebID profile had no `Link rel=inbox` header; the
+  `ldp:inbox` triple that the recipient had added gave the inbox (80/80).
+- **Spec (LDN §3.1),** https://www.w3.org/TR/ldn/#discovery:
+  > These may be carried out in either order, but if the first fails to result in an Inbox the second MUST be tried.
+
+  > A resource MUST advertise only one Inbox.
+- **Spec position:** either discovery route is allowed. **Verdict:**
+  consistent. Each profile advertised exactly one inbox (a fixed
+  `ch3-inbox/`, reused across reps for this reason).
+
+### P7-4. Sender verification was left to the access document
+- **Observed:** the prototype handlers did not verify the notice's sender.
+  Only alice (Append) and the owner could POST to the inbox, because of the
+  access document the recipient wrote.
+- **Spec (LDN §3.3.3),** https://www.w3.org/TR/ldn/#sender-verification:
+  > Receivers SHOULD verify the sender of the notification.
+- **Spec position:** recommends (SHOULD). **Verdict:** a gap in **our
+  prototype**, not in CSS. The access document limited who could post. The
+  handler did not check that the notice came from the agent it names.
+
+### P7-5. Former recipients are not listed anywhere after the revoke
+- **Observed:** after the revoke, the access document no longer named appR or
+  bob. alice's recipient list came only from her own grant log (40/40).
+- **Spec (WAC §8.1, non-normative),** https://solidproject.org/TR/wac#consider-acl-resource-activities:
+  > Implementations are encouraged to use mechanisms to record activities about ACL resources for the purpose of accountability and integrity, e.g., by having audit trails, notification of changes, reasons for change, preserving provenance information.
+- **Spec position:** encouraged, non-normative. There is no normative text
+  on keeping a record of past grantees (for WAC and ACP, silent, scoped to
+  the text quoted in `spec_quotes.md` §2–3).
+- **Verdict:** consistent. Through the resource interface alice used,
+  CSS 7.2.0 offered her no record of former grantees. We did not search the
+  CSS source for internal audit logging, so "not implemented" is **not**
+  claimed. The claim is only "not available to alice here".
