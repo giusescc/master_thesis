@@ -295,7 +295,10 @@ WebhookChannel2023 (Draft CG Report 0.1).
 ### P5-2. Copied data stays unless the recipient deletes it
 - **Observed:** the naive aggregator kept all 23 rows through 10 post-revoke
   syncs. Nothing from CSS reached it except the 403 on its own fetches.
-- **Spec:** none of the Solid Protocol, WAC or ACP sections quoted in
+- **Spec (WAC §5.3.1),** https://solidproject.org/TR/wac#server-read-operation:
+  > When an operation requests to read a resource, the server MUST match an Authorization allowing the acl:Read access privilege on the resource.
+- **Spec position:** access control applies to *operations on the server*;
+  none of the Solid Protocol, WAC or ACP sections quoted in
   `spec_quotes.md` §1–3 has text on data a client has already copied. No
   dedicated search for such text was recorded. Reading: **silent**, scoped to
   the text quoted.
