@@ -190,7 +190,10 @@ def run_one(log, config, variant, rep, rng) -> None:
     for name, h in handlers.items():
         h.start(inboxes[name])
 
-    # item (a): where alice's recipient list comes from
+    # item (a): where alice's recipient list comes from. `server_exposed=False` here and
+    # `recipient_list_from_own_grant_log: True` in the summary are constants this script
+    # writes by design, not measurements; the measured support is
+    # `access_doc_names_recipients_after` (acl_names below).
     grant_log = sorted(recipients[n].web_id for n in recipients)
     log.write("recipient_list", source="alice's own grant log (the 'grant' lines this run wrote)",
               recipients=grant_log, server_exposed=False,

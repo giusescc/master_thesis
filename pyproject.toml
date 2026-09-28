@@ -19,7 +19,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "ch3/tests"]
 addopts = "-ra"
 
 [tool.setuptools.packages.find]
