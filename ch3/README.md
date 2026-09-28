@@ -99,6 +99,9 @@ git-ignored. Chapter 2's lab on :3000–3002 is independent and untouched.
   is a **passport renewal**, not a medical one, to avoid health data.
 - P6/P7 use `qwen2.5:3b` (chosen over the Spec's `7b` by the User).
   Retrieval, the primary measurement, does not depend on the generator.
-- Instrument changes made after a dry run, and the one excluded batch (P2),
-  are documented in OBSERVATIONS.md with their commits.
-  `results/raw/EXCLUDED.tsv` lists excluded files with the reason.
+- Instrument changes made after a dry run are documented in OBSERVATIONS.md
+  with their commits. Two groups of files are excluded (kept on disk, not
+  counted), each listed with its reason in `results/raw/EXCLUDED.tsv`: the 7
+  runs of the P2 instrument-correction batch (OBSERVATIONS § P2), and 15 full
+  run 2 runs that spanned a system suspend, one of them the P4 run that failed
+  with a CSS 500 (OBSERVATIONS § "Full run 2").
