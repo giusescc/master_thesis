@@ -367,7 +367,7 @@ the revoke, nothing alice can read on CSS 7.2.0 names the former recipients.
 
 **(b) The inbox setup each recipient needed.** Each recipient has a
 container `<pod>ch3-inbox/`. It was created (201) during the P7 dry runs and
-already existed in all 80 full-run setups. In every run, each recipient added
+already existed in all 80 setups of full run 1 (full run 2: see § "Full run 2"). In every run, each recipient added
 `ldp:inbox` to its WebID profile with an N3 Patch (205), and rewrote the
 inbox's access document so that alice has **`acl:Append` only** (WAC `.acl`,
 ACP `.acr`: 205 in 80/80). The recipient keeps full control. The full documents are in the
@@ -455,6 +455,12 @@ number (r11 and up, `--start-rep 11`, CH3_FULL_RUN=2), run under
 more (commit bcd0031). All completed with no failure. The p3/acp/short r11 file
 was first committed while still being written (647120e, labelled WIP); 57a2b0d
 holds the complete file, and that is the version recorded in the manifest.
+
+**P7 inbox setup after the reset.** Because full run 2 started from
+`--reset`, the recipients' `ch3-inbox/` containers no longer existed. They
+were created (201) in the first rep of each config (`cooperating-r01`, WAC and
+ACP; appR and bob each: 4 creations). They already existed in the other 76 of
+80 setups. The categorical outcome was unchanged.
 
 **Timings.** The distributions in the phase sections above come from full run
 1 only. Full run 2 is used for the categorical comparison, not to widen the
