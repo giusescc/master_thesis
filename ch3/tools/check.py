@@ -2,8 +2,9 @@
 
 Exit 0 only if, for every full run present, every condition in
 ``ch3/lib/conditions.py`` has at least MIN_REPS completed runs, every line of
-every raw file has an ISO 8601 UTC timestamp with milliseconds, and every file
-still matches the hash recorded when its run closed.
+every raw file has an ISO 8601 UTC timestamp with milliseconds, every file
+still matches the hash recorded when its run closed, and no counted run
+spanned a system suspend (wall clock vs monotonic clock, see rawindex).
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from __future__ import annotations
 import sys
 
 from ch3.lib.conditions import MIN_REPS, conditions
-from ch3.tools.rawindex import by_condition, excluded, integrity, load_runs
+from ch3.tools.rawindex import SUSPEND_THRESHOLD_S, by_condition, excluded, integrity, load_runs
 
 
 def main() -> int:
@@ -34,6 +35,10 @@ def main() -> int:
     for run in runs:
         if run.bad_ts_lines:
             problems.append(f"{run.path.name}: lines without a valid ISO-ms-UTC ts: {run.bad_ts_lines[:10]}")
+        if run.suspended_s > SUSPEND_THRESHOLD_S:
+            problems.append(f"{run.path.relative_to(run.path.parents[2])}: spanned a system suspend "
+                            f"({run.suspended_s} s of wall clock not seen by the monotonic clock); "
+                            "exclude it in raw/EXCLUDED.tsv and run a make-up rep")
     problems += integrity()
     skipped = excluded()
     if skipped:

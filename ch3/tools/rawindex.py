@@ -6,6 +6,7 @@ import json
 import re
 from collections import defaultdict
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 
 from ch3.lib.env import RAW
@@ -22,6 +23,7 @@ class Run:
     completed: bool          # has a summary line and no run_error
     bad_ts_lines: list[int]  # line numbers without a valid ts
     outcome: dict | None
+    suspended_s: float = 0.0  # wall-clock minus monotonic span; > threshold = spanned a suspend
 
 
 EXCLUDED = RAW / "EXCLUDED.tsv"
@@ -70,8 +72,30 @@ def load_runs() -> list[Run]:
             completed=summary is not None and not errored,
             bad_ts_lines=bad,
             outcome=summary.get("outcome") if summary else None,
+            suspended_s=suspended_seconds(lines),
         ))
     return runs
+
+
+SUSPEND_THRESHOLD_S = 5.0
+
+
+def suspended_seconds(lines: list[dict]) -> float:
+    """Wall-clock span minus monotonic span of a run, in seconds.
+
+    ``ts`` is wall clock; ``t_ms`` is a monotonic clock, which on macOS stops
+    while the machine sleeps. A difference above SUSPEND_THRESHOLD_S means the
+    run spanned a system suspend, so its timed windows are not valid.
+    """
+    timed = [l for l in lines if isinstance(l.get("t_ms"), (int, float)) and isinstance(l.get("ts"), str)]
+    if len(timed) < 2:
+        return 0.0
+    try:
+        wall = (datetime.fromisoformat(timed[-1]["ts"].replace("Z", "+00:00"))
+                - datetime.fromisoformat(timed[0]["ts"].replace("Z", "+00:00"))).total_seconds()
+    except ValueError:
+        return 0.0
+    return round(wall - (timed[-1]["t_ms"] - timed[0]["t_ms"]) / 1000, 1)
 
 
 def by_condition(runs: list[Run]) -> dict[tuple[int, tuple[str, str, str]], list[Run]]:
