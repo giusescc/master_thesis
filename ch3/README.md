@@ -34,8 +34,10 @@ npm run exp:setup -- --reset   # npm ci + uv sync; CSS 7.2.0 WAC :3100 + ACP :31
                                # (alice, appr, bob); client credentials into ch3/.state/.env;
                                # writes results/ENVIRONMENT.md
 npm run exp:p1                 # ... through exp:p7; each runs >= 10 reps per condition on both configs
-npm run exp:check              # exit 0 iff every condition has >= 10 completed runs per full run
-                               # and every line has an ISO 8601 UTC ms timestamp
+npm run exp:check              # exit 0 iff every condition has >= 10 completed runs per full run,
+                               # every line has an ISO 8601 UTC ms timestamp, every raw file matches
+                               # its MANIFEST.sha256 entry, and no counted run spanned a system
+                               # suspend (wall clock > monotonic clock by more than 5 s)
 CH3_FULL_RUN=2 npm run exp:p1  # ... a second full run (from a fresh exp:setup -- --reset)
 npm run exp:compare            # exit 0 iff full runs 1 and 2 give identical categorical outcomes
                                # per condition and no raw file changed (MANIFEST.sha256)
