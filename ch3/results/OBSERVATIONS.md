@@ -465,7 +465,7 @@ polling as in v1:
 | | cooperating, WAC | cooperating, ACP | non-cooperating, WAC | non-cooperating, ACP |
 |---|---|---|---|---|
 | sent → received (ms), appR | 970 (909–1007) | 955 (558–1013) | 982 (886–1014) | 993 (918–1124) |
-| sent → purge completed (ms), appR | 972 (911–1009) | 958 (562–1015) | n/a | n/a |
+| sent → purge completed (ms), appR | 971 (911–1009) | 958 (562–1015) | n/a | n/a |
 
 **Declared only.** The DPV terms are metadata inside a notice. No server
 acts on them: CSS stored the body like any other resource, and the only
