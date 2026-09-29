@@ -7,7 +7,11 @@ The notice mechanism, the handlers and the purge are a prototype written for
 this experiment, not a Solid or CSS feature. No acknowledgement mechanism is
 added: the run only records whether one exists.
 
-    npm run exp:p7 [-- --config wac|acp] [--variant cooperating|non-cooperating] [--reps N] [--dry-run]
+The ``-consent`` variants send notice v2, which adds a DPV consent status
+(``dpv:hasConsentStatus dpv:ConsentWithdrawn``; HYPOTHESES.md, P7 notice v2).
+It is declared only: the handlers act on ``odrl:target`` alone.
+
+    npm run exp:p7 [-- --config wac|acp] [--variant cooperating|non-cooperating|cooperating-consent|non-cooperating-consent] [--reps N] [--dry-run]
 """
 
 from __future__ import annotations
@@ -31,6 +35,7 @@ from ch3.lib.notify import endpoint, subscribe
 POLL_S, WAIT_AFTER_S, K = 1.0, 5.0, 4
 LDP = rdflib.Namespace("http://www.w3.org/ns/ldp#")
 LDP_INBOX = "http://www.w3.org/ns/ldp#inbox"
+DPV = rdflib.Namespace("https://w3id.org/dpv#")
 QUESTIONS = json.loads((CH3 / "fixtures" / "questions.json").read_text())["questions"]
 CONTEXT = {"odrl": "http://www.w3.org/ns/odrl/2/", "dpv": "https://w3id.org/dpv#",
            "ch3n": "https://example.org/ch3/notice#", "xsd": "http://www.w3.org/2001/XMLSchema#"}
@@ -74,8 +79,12 @@ def discover_inbox(log, alice: Agent, recipient: Agent) -> str | None:
     return from_header or (str(from_rdf) if from_rdf else None)
 
 
-def notice(alice: Agent, recipient: Agent, target: str) -> dict:
-    return {
+def notice_version(variant: str) -> int:
+    return 2 if variant.endswith("-consent") else 1
+
+
+def notice(alice: Agent, recipient: Agent, target: str, version: int = 1) -> dict:
+    body = {
         "@context": CONTEXT,
         "@id": f"urn:uuid:{uuid.uuid4()}",
         "dpv:hasRecipient": {"@id": recipient.web_id},
@@ -88,6 +97,17 @@ def notice(alice: Agent, recipient: Agent, target: str) -> dict:
                                      "odrl:action": {"@id": "odrl:read"}},
         "ch3n:requests": {"@id": "ch3n:DeleteCopiesOfTarget"},
     }
+    if version == 2:
+        body["ch3n:withdrawnConsent"] = {"@type": "dpv:Consent",
+                                         "dpv:hasConsentStatus": {"@id": "dpv:ConsentWithdrawn"}}
+    return body
+
+
+def has_consent_withdrawn(body) -> bool:
+    """Does the notice, parsed as JSON-LD, state a dpv:Consent with status dpv:ConsentWithdrawn?"""
+    graph = rdflib.Graph().parse(data=json.dumps(body), format="json-ld")
+    return any((c, rdflib.RDF.type, DPV.Consent) in graph
+               for c in graph.subjects(DPV.hasConsentStatus, DPV.ConsentWithdrawn))
 
 
 # --- the recipient side: stores + an inbox-polling handler
@@ -136,7 +156,12 @@ class Recipient:
                 except (ValueError, KeyError, TypeError, IndexError) as exc:
                     self.log.write("notice_unparsed", recipient=self.agent.name, item=item, error=repr(exc))
                     continue
-                self.received.append({"t_ms": rec["t_ms"], "target": target})
+                try:
+                    consent_withdrawn = has_consent_withdrawn(r.json())
+                except Exception as exc:  # noqa: BLE001 -- recorded, not fatal to the handler
+                    self.log.write("notice_jsonld_unparsed", recipient=self.agent.name, item=item, error=repr(exc))
+                    consent_withdrawn = False
+                self.received.append({"t_ms": rec["t_ms"], "target": target, "consent_withdrawn": consent_withdrawn})
                 if self.cooperating:
                     rows, chunks = self.agg.purge(target), self.memory.purge(target)
                     done = self.log.write("purge_done", recipient=self.agent.name, target=target,
@@ -177,7 +202,8 @@ def acl_names(log, alice: Agent, url: str, who: dict[str, str], when: str) -> di
 
 def run_one(log, config, variant, rep, rng) -> None:
     log.write("models", **verify_models())
-    cooperating = variant == "cooperating"
+    cooperating = variant.startswith("cooperating")
+    version = notice_version(variant)
     s = scene.build(log, config)
     recipients = {a.name: a for a in (s.appr, s.bob)}
 
@@ -218,9 +244,9 @@ def run_one(log, config, variant, rep, rng) -> None:
     sent = {}
     for name, agent in recipients.items():
         inbox = discover_inbox(log, s.alice, agent)
-        body = notice(s.alice, agent, s.person)
+        body = notice(s.alice, agent, s.person, version)
         r = s.alice.post(inbox, json.dumps(body), "application/ld+json")
-        rec = log.write("notice_sent", actor="alice", recipient=name, inbox=inbox, notice=body,
+        rec = log.write("notice_sent", actor="alice", recipient=name, inbox=inbox, notice_version=version, notice=body,
                         response=response_record(r, body=True))
         sent[name] = {"t_ms": rec["t_ms"], "inbox": inbox, "discovered": inbox == inboxes[name], "response": r}
     time.sleep(WAIT_AFTER_S)
@@ -248,6 +274,9 @@ def run_one(log, config, variant, rep, rng) -> None:
         res = h.residual(s.person, s.distractor)
         per[name] = {"discovered_inbox": sent[name]["discovered"], "received": bool(h.received),
                      "purged": bool(h.purged), **res}
+        if version == 2:  # v1 outcomes stay exactly as recorded in the earlier runs
+            per[name]["notice_has_consent_status"] = bool(h.received) and all(
+                x["consent_withdrawn"] for x in h.received)
         t0 = sent[name]["t_ms"]
         metrics[f"{name}_sent_to_received_ms"] = round(h.received[0]["t_ms"] - t0, 1) if h.received else None
         metrics[f"{name}_sent_to_purged_ms"] = round(h.purged[0]["t_ms"] - t0, 1) if h.purged else None
