@@ -428,3 +428,67 @@ reps each.
   LDN's 201 means only that the notification resource was created. We add no
   acknowledgement mechanism; we record only that none exists.
 - **H7.9.** WAC and ACP give the same categorical outcome per variant.
+
+## P7 notice v2: DPV consent status (pre-registered 2026-09-29, before P7 v2's first run, dry runs included)
+
+**Why, and a documented change of design.** The P7 section above says we
+"deliberately use **no** consent-status or right-exercise term". At the
+User's request (2026-09-29), the notice now also expresses the **withdrawal
+of consent**, not only the revocation of access. This reverses that one
+design choice, for the new variants only. The earlier P7 runs and their raw
+files stay as they are, and they remain the evidence for notice v1.
+
+**Terms** (DPV 2.3, CG-FINAL 25 February 2026, fetched live on 2026-09-29
+from https://w3id.org/dpv/modules/legal_basis; identical to
+`spec_quotes.md` §10):
+- `dpv:hasConsentStatus` (https://w3id.org/dpv#hasConsentStatus),
+  "Specifies the state or status of consent";
+- `dpv:ConsentWithdrawn` (https://w3id.org/dpv#ConsentWithdrawn), "The
+  state where the consent is withdrawn or revoked specifically by the data
+  subject and which prevents it from being further used as a valid state";
+- `dpv:Consent` (https://w3id.org/dpv#Consent), "Consent of the Data
+  Subject for specified process or activity".
+
+**Notice v2** = notice v1 unchanged (same ODRL permission, `dpv:hasRecipient`,
+`dpv:hasDataSubject`, `ch3n:` terms), plus one node:
+
+    "ch3n:withdrawnConsent": {"@type": "dpv:Consent",
+                              "dpv:hasConsentStatus": {"@id": "dpv:ConsentWithdrawn"}}
+
+`ch3n:withdrawnConsent` is a local linking term, like `ch3n:withdrawnPermission`,
+because no fetched DPV term links a notice to the consent it concerns.
+
+**A modelling mismatch, stated up front (the User's decision).** DPV's usage
+note for `dpv:ConsentWithdrawn` suggests it "when it is the data subject" and
+`dpv:ConsentRevoked` "when it is a non-data-subject entity". In our scene the
+notice's `dpv:hasDataSubject` is `person.ttl#me` (the fictional person in the
+passport-renewal fixture, which is kept), while the sender is alice. The User
+chose `dpv:ConsentWithdrawn` anyway, with the mismatch recorded in
+`SPEC_VS_IMPL.md`. Whether that choice fits the law is not assessed here.
+
+**Declared only.** No server acts on these terms. CSS stores the notice body
+as it stores any resource, and the prototype handlers still act on
+`odrl:target` alone; they do not read the consent status.
+
+**Conditions.** Two new variants, so the notice version is part of the
+condition: p7 × {wac, acp} × {`cooperating-consent`,
+`non-cooperating-consent`}, ≥ 10 reps each, in full run 1 and, after
+`npm run exp:setup -- --reset`, in full run 2. The v1 variants
+(`cooperating`, `non-cooperating`) keep sending notice v1. Every run logs
+`notice_version` (1 or 2) in its `notice_sent` lines.
+
+**Predictions.**
+- **H7.10.** Every v2 variant gives the **same** outcome as its v1
+  counterpart for H7.1–H7.9: inbox setup succeeds, recipient list only from
+  alice's grant log, no subscription visible, discovery through RDF, POST
+  201 + `Location`, cooperating residual 0 / non-cooperating residual 23
+  rows + 10 chunks, and alice's view identical in both variants. Adding the
+  consent-status node changes nothing any party does.
+- **H7.11.** The notice each recipient reads back from its inbox, parsed as
+  JSON-LD, contains the triple `?c dpv:hasConsentStatus dpv:ConsentWithdrawn`
+  with `?c a dpv:Consent`, in every rep (new outcome field
+  `notice_has_consent_status`, true for both recipients). CSS stores and
+  returns the node without removing or rewriting it.
+- **H7.12.** Nothing in CSS's response to alice's POST, or in anything alice
+  can read afterwards, depends on the consent status: her view is
+  byte-for-byte the same set of statuses and header names as with notice v1.
