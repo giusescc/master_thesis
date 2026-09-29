@@ -18,7 +18,7 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from ch3.lib.env import CH3, CONFIGS, LOGS, RESULTS, ROOT, STATE
+from ch3.lib.env import CH3, CONFIGS, LOGS, RAW, RESULTS, ROOT, STATE
 from ch3.lib.jsonl import git_commit, utc_ms
 
 NGINX_IMAGE_FILE = CH3 / "config" / "nginx" / "IMAGE"
@@ -94,6 +94,37 @@ def ollama_section() -> str:
                 out += f"  - {role} `{name}`: pinned `{digest}`, installed `{got}` ({'match' if got == digest else 'MISMATCH'})\n"
     else:
         out += "- models: not used yet (P6 not built)\n"
+    return out + "\n" + model_choice()
+
+
+PLANNED_GENERATE_MODEL = "qwen2.5:7b-instruct"
+
+
+def model_choice() -> str:
+    """The planned vs used generation model, and what the raw files record.
+
+    Tallies the ``models`` header line of every P6/P7 raw file on disk (counted
+    and excluded alike), so a change of model would show up here.
+    """
+    seen: dict[tuple[str, str, str], int] = {}
+    for path in sorted(RAW.glob("p[67]/*/*.jsonl")):
+        with path.open(encoding="utf-8") as handle:
+            line = next((json.loads(l) for l in handle if '"event": "models"' in l), None)
+        key = (path.parts[-3], line["generate"]["name"], line["generate"]["digest"]) if line else (path.parts[-3], "no models line", "-")
+        seen[key] = seen.get(key, 0) + 1
+    out = (
+        "### Model choice (P6, P7)\n\n"
+        f"- Planned (Spec): `{PLANNED_GENERATE_MODEL}`. Used: `qwen2.5:3b` (Q4_K_M, 3.1B parameters).\n"
+        "- Reason: the User's choice, on 2026-09-24, of the smallest size of the model "
+        "(\"let's go with the, the smallest size version\"), confirmed as `qwen2.5:3b`. "
+        "Recorded in `config/ollama-models.txt` and `HYPOTHESES.md` (P6).\n"
+        "- What actually ran, from the `models` header line of every P6/P7 raw file on disk "
+        "(counted and excluded files alike):\n"
+    )
+    for (phase, name, digest), n in sorted(seen.items()):
+        out += f"  - {phase.upper()}: {n} raw files, generate `{name}` digest `{digest}`\n"
+    if not seen:
+        out += "  - no P6/P7 raw files yet\n"
     return out
 
 

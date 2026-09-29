@@ -77,3 +77,13 @@ qwen2.5:3b                 357c53fb659c    1.9 GB    22 hours ago
 - Full sha256 digests (pinned in `config/ollama-models.txt` vs installed, from `/api/tags`):
   - embed `nomic-embed-text:latest`: pinned `0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f`, installed `0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f` (match)
   - generate `qwen2.5:3b`: pinned `357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b`, installed `357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b` (match)
+
+### Model choice (P6, P7)
+
+- Planned (Spec): `qwen2.5:7b-instruct`. Used: `qwen2.5:3b` (Q4_K_M, 3.1B parameters).
+- Reason: the User's choice, on 2026-09-24, of the smallest size of the model ("let's go with the, the smallest size version"), confirmed as `qwen2.5:3b`. Recorded in `config/ollama-models.txt` and `HYPOTHESES.md` (P6).
+- What actually ran, from the `models` header line of every P6/P7 raw file on disk (counted and excluded files alike):
+  - P6: 45 raw files, generate `qwen2.5:3b` digest `357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b`
+  - P7: 160 raw files, generate `qwen2.5:3b` digest `357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b`
+
+_This "Model choice" subsection was added by hand on 2026-09-29, without rerunning `exp:setup` (which would restart the lab and replace the environment recorded above). It is the text `ch3/tools/environment.py` now writes here on every setup._
