@@ -382,3 +382,43 @@ Protocol requires LDN Receiver conformance (§1f).
   CSS 7.2.0 offered her no record of former grantees. We did not search the
   CSS source for internal audit logging, so "not implemented" is **not**
   claimed. The claim is only "not available to alice here".
+
+### P7-6. The DPV consent status in notice v2 is declared only
+- **Observed:** notice v2 (variants `cooperating-consent`,
+  `non-cooperating-consent`) carried
+  `ch3n:withdrawnConsent [ a dpv:Consent; dpv:hasConsentStatus dpv:ConsentWithdrawn ]`.
+  CSS 7.2.0 (WAC and ACP) stored it and returned it unchanged to the
+  recipient (160/160 receptions). Every categorical outcome, alice's view
+  included, equalled notice v1's (80/80 runs, both full runs).
+- **Terms,** DPV 2.3 (Final Community Group Report, 25 February 2026),
+  module Legal Basis, fetched live on 2026-09-29
+  (https://w3id.org/dpv/modules/legal_basis → https://w3c-cg.github.io/dpv/2.3/dpv/modules/legal_basis.html).
+  Quoted verbatim. DPV definitions have no terminal full stop on the page.
+  - `dpv:hasConsentStatus`, https://w3id.org/dpv#hasConsentStatus (§9.2.2; `rdf:Property`, Range includes `dpv:ConsentStatus`):
+    > Specifies the state or status of consent
+  - `dpv:ConsentWithdrawn`, https://w3id.org/dpv#ConsentWithdrawn (§9.1.20; parent `dpv:ConsentStatusInvalidForProcessing` → `dpv:ConsentStatus`):
+    > The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state
+
+    Usage note:
+    > This state can be considered a form of 'revocation' of consent, where the revocation can only be performed by the data subject. Therefore we suggest using ConsentRevoked when it is a non-data-subject entity, and ConsentWithdrawn when it is the data subject
+  - `dpv:Consent`, https://w3id.org/dpv#Consent (§9.1.7):
+    > Consent of the Data Subject for specified process or activity
+  - For contrast, not used: `dpv:ConsentRevoked`, https://w3id.org/dpv#ConsentRevoked (§9.1.15):
+    > The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state
+- **Local term:** `ch3n:withdrawnConsent` (`https://example.org/ch3/notice#`)
+  links the notice to the consent node. No fetched DPV term links a notice
+  to the consent it concerns.
+- **Modelling mismatch, kept by the User's decision (2026-09-29):** the
+  notice's `dpv:hasDataSubject` is `person.ttl#me` (the fictional person in
+  the passport-renewal fixture), while the sender is alice (`ch3n:sender`).
+  DPV's usage note suggests `ConsentWithdrawn` only "when it is the data
+  subject". The notice therefore does not follow that suggestion. DPV is
+  a vocabulary, and nothing in our stack checks it. Whether alice may
+  withdraw on that person's behalf is left to the legal analysis.
+- **Spec position:** DPV defines the terms. The Solid Protocol, LDN and CSS
+  assign them no behaviour (**silent**, scoped to the texts quoted in
+  `spec_quotes.md` §1, §8 and §10).
+- **Verdict:** **declared only**, in this lab's sense. No server enforced or
+  advertised anything because of these terms. The only deletion came from
+  our prototype's cooperating handler, which acts on `odrl:target` and
+  ignores the consent status.
