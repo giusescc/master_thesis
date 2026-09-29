@@ -13,7 +13,8 @@ VARIANTS: dict[str, tuple[str, ...]] = {
     "p4": ("a", "a-invalidate", "b"),
     "p5": ("naive", "403-aware"),
     "p6": ("rag",),
-    "p7": ("cooperating", "non-cooperating"),
+    "p7": ("cooperating", "non-cooperating",                      # notice v1
+           "cooperating-consent", "non-cooperating-consent"),  # notice v2 (DPV consent status)
 }
 
 

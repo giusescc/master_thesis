@@ -417,6 +417,74 @@ or that has no inbox.
 **Predictions:** H7.1–H7.9 all matched. H7.4 (no `Link rel=inbox` on the
 profile) was the less certain one, and it held.
 
+## P7 rerun: notice v2 with a DPV consent status
+
+**Why.** At the User's request (2026-09-29), the notice should express the
+withdrawal of consent, not only the revocation of access. Notice v2 is
+notice v1 unchanged plus one node, `ch3n:withdrawnConsent`: a `dpv:Consent`
+with `dpv:hasConsentStatus dpv:ConsentWithdrawn` (DPV 2.3, fetched live
+2026-09-29; quoted in `SPEC_VS_IMPL.md` P7-6). Predictions H7.10–H7.12 were
+committed first (932b9f6), and the first raw file came after (567915a). The
+passport-renewal fixture is unchanged.
+
+**Which runs used which notice.** The notice version is part of the
+condition. `cooperating` and `non-cooperating` are **notice v1** (the 80
+raw files of 2026-09-28, all kept and still counted).
+`cooperating-consent` and `non-cooperating-consent` are **notice v2**, and
+every one of their `notice_sent` lines carries `notice_version: 2`.
+
+**Ran:** p7 × {wac, acp} × {cooperating-consent, non-cooperating-consent},
+10 reps each, in full run 1 (CH3_FULL_RUN=1) and again in full run 2 after
+`npm run exp:setup -- --reset` (CH3_FULL_RUN=2): 80 runs, 0 failed, all
+under `caffeinate -dis` with the lid open. No run spanned a system suspend
+(max wall-minus-monotonic gap 0 s). `exp:check` and `exp:compare` exit 0
+over all 36 conditions. The recipients' inboxes were created (201) by the
+dry runs before full run 1, and again by the first rep of each config in full
+run 2 (`cooperating-consent-r01`, WAC and ACP), since `--reset` had removed
+them.
+
+**Result: nothing any party did changed.** In every condition and both full
+runs, the categorical outcome of the v2 variant, with the new field set
+aside, equals that of its v1 counterpart: same inbox setup, recipient list
+only from alice's grant log, no subscription visible to alice, discovery
+through the profile's RDF, POST 201 + `Location`, cooperating residual
+0 rows / 0 chunks and non-cooperating residual 23 rows / 10 chunks, and
+alice's view (statuses and response header names) identical in both
+variants. The cooperating handler acted on `odrl:target` alone, as
+designed. It never read the consent status.
+
+**The consent status survived storage.** The notice each recipient read
+back from its inbox, parsed as JSON-LD, contained `?c a dpv:Consent;
+dpv:hasConsentStatus dpv:ConsentWithdrawn` in 160/160 receptions (2
+recipients × 80 runs; outcome field `notice_has_consent_status`). CSS
+returned the JSON-LD body as it was POSTed.
+
+**Timings** (full run 1, medians; min–max), from the handler's 1 s
+polling as in v1:
+
+| | cooperating, WAC | cooperating, ACP | non-cooperating, WAC | non-cooperating, ACP |
+|---|---|---|---|---|
+| sent → received (ms), appR | 970 (909–1007) | 955 (558–1013) | 982 (886–1014) | 993 (918–1124) |
+| sent → purge completed (ms), appR | 971 (911–1009) | 958 (562–1015) | n/a | n/a |
+
+**Declared only.** The DPV terms are metadata inside a notice. No server
+acts on them: CSS stored the body like any other resource, and the only
+thing that deleted anything was our cooperating handler, which ignores
+them. A recipient that ignored the notice kept everything, whatever the
+notice said about consent.
+
+**A modelling mismatch, kept on purpose (the User's decision).** DPV's
+usage note reserves `dpv:ConsentWithdrawn` for withdrawal by the data
+subject. In our notice the declared data subject is `person.ttl#me` (the
+fictional person in the fixture), while the sender is alice. See
+`SPEC_VS_IMPL.md` P7-6.
+
+**Predictions:** H7.10 and H7.11 matched. H7.12 matched as measured: the
+outcome compares alice's statuses and response header names, not raw
+bytes. The pre-registered wording "byte-for-byte" was imprecise. What was
+compared is the set of statuses and header names that the same sentence
+names.
+
 ## Full run 2
 
 **Ran:** every condition again, full_run=2, from a fresh `npm run exp:setup
