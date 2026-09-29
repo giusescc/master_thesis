@@ -70,7 +70,7 @@ full run 1 (10/10 identical per condition); see OBSERVATIONS.md for details.
 | **P4** Comunica 0.8.0 | `a`, `a-invalidate`, `b` | Every engine re-requests `person.ttl` (403) and the query fails as a whole |
 | **P5** aggregator | `naive`, `403-aware` | Naive keeps 23/23 rows; 403-aware deletes them after a median of ~21–25 ms (max ~47 ms); "withdrawn", "never granted" and "deleted" give identical 403s |
 | **P6** agent memory | `rag` | The pre-revoke memory still retrieves `person.ttl` as top-1 for 10/10 questions and answers 10/10 correctly |
-| **P7** withdrawal notice | `cooperating`, `non-cooperating` | Notice (LDN, ODRL + DPV) received in ~1 s; cooperating purges all, non-cooperating nothing (by construction); alice's view is identical either way |
+| **P7** withdrawal notice | `cooperating`, `non-cooperating` (notice v1); `cooperating-consent`, `non-cooperating-consent` (notice v2, + `dpv:hasConsentStatus dpv:ConsentWithdrawn`) | Notice (LDN, ODRL + DPV) received in ~1 s; cooperating purges all, non-cooperating nothing (by construction); alice's view is identical either way |
 
 ## Layout
 

@@ -513,6 +513,7 @@ Namespace (https://w3id.org/dpv, §Introduction):
 | dpv:ConsentWithdrawn | `https://w3id.org/dpv#ConsentWithdrawn` | "The state where the consent is withdrawn or revoked specifically by the data subject and which prevents it from being further used as a valid state" | "This state can be considered a form of 'revocation' of consent, where the revocation can only be performed by the data subject. Therefore we suggest using ConsentRevoked when it is a non-data-subject entity, and ConsentWithdrawn when it is the data subject" | legal_basis §9.1.20, https://w3id.org/dpv/modules/legal_basis#ConsentWithdrawn (parent: dpv:ConsentStatusInvalidForProcessing) |
 | dpv:ConsentRevoked | `https://w3id.org/dpv#ConsentRevoked` | "The state where the consent is revoked by an entity other than the data subject and which prevents it from being further used as a valid state" | "An example of this state is when a Data Controller stops utilising previously obtaining consent, such as when that service no longer exists" | legal_basis §9.1.15, https://w3id.org/dpv/modules/legal_basis#ConsentRevoked |
 | dpv:WithdrawConsent | `https://w3id.org/dpv#WithdrawConsent` | "Control for withdrawing consent" | "Indicates how the data subject can withdraw consent e.g. used with dpv:isExercisedAt" | legal_basis §9.1.147, https://w3id.org/dpv/modules/legal_basis#WithdrawConsent |
+| dpv:Consent | `https://w3id.org/dpv#Consent` | "Consent of the Data Subject for specified process or activity" | none | legal_basis §9.1.7, https://w3id.org/dpv/modules/legal_basis#Consent (added 2026-09-29 for P7 notice v2) |
 | dpv:hasConsentStatus | `https://w3id.org/dpv#hasConsentStatus` | "Specifies the state or status of consent" | none | legal_basis §9.2.2, https://w3id.org/dpv/modules/legal_basis#hasConsentStatus |
 | dpv:RightExerciseNotice | `https://w3id.org/dpv#RightExerciseNotice` | "Information associated with exercising of an active right such as where and how to exercise the right, information required for it, or updates on an exercised rights request" | "This concept is intended for providing information regarding a right exercise. For specific instances of such exercises, see RightExerciseActivity and RightExerciseRecord." | rights §5.1.6, https://w3id.org/dpv/modules/rights#RightExerciseNotice |
 | dpv:RightExerciseActivity | `https://w3id.org/dpv#RightExerciseActivity` | "An activity representing an exercising of an active right" | "There may be multiple activities associated with exercising and fulfilling rights. See the RightExerciseRecord concept for record-keeping of such activities in a cohesive manner." | rights §5.1.5, https://w3id.org/dpv/modules/rights#RightExerciseActivity |
@@ -521,6 +522,10 @@ Namespace (https://w3id.org/dpv, §Introduction):
 | dpv:hasRecipient | `https://w3id.org/dpv#hasRecipient` | "Indicates Recipient of Data" | "Also used to indicate the Recipient of a Right Exercise Activity" | entities §6.2.15, https://w3id.org/dpv/modules/entities#hasRecipient |
 
 The DPV definitions have no terminal full stop on the page. They are quoted as shown.
+
+Re-fetched live on 2026-09-29 for P7 notice v2 (`curl -L`: https://w3id.org/dpv → 200
+https://w3c-cg.github.io/dpv/2.3/dpv/; https://w3id.org/dpv/modules/legal_basis → 200, same version and
+date). `dpv:ConsentWithdrawn`, `dpv:ConsentRevoked` and `dpv:hasConsentStatus` read exactly as quoted above.
 
 ---
 
