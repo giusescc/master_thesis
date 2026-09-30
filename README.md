@@ -100,12 +100,13 @@ Totals across 62 checks: 39 ENFORCED, 17 NOT-SUPPORTED, 6 DECLARED-ONLY,
   commit before each `Results for NN_...` commit. Chapter 3 commits each
   phase's section of [`ch3/HYPOTHESES.md`](ch3/HYPOTHESES.md) in its own
   commit, before that phase's first counted run. Chapter 3 was
-  squash-merged into `main`, so those per-phase
-  `Hypotheses for Chapter 3 Pn … (pre-run)` commits are in the commit lists
-  of [PR #4](https://github.com/giusescc/master_thesis/pull/4/commits) and
-  [PR #5](https://github.com/giusescc/master_thesis/pull/5/commits) (the P7
-  notice v2 predictions), not in `main`'s history. The tags `ch3-history`
-  and `ch3-closeout-history` keep them in the repository. After
+  squash-merged into `main`, so these commits are not in `main`'s history.
+  The seven per-phase `Hypotheses for Chapter 3 Pn … (pre-run)` commits are
+  in [PR #4](https://github.com/giusescc/master_thesis/pull/4/commits)
+  (tag `ch3-history`). The P7 notice v2 pre-registration commit `932b9f6`
+  (`P7 notice v2: pre-register DPV consent-status predictions … before any
+  run`) is in [PR #5](https://github.com/giusescc/master_thesis/pull/5/commits)
+  (tag `ch3-closeout-history`). After
   `git fetch --tags`, run
   `git log --oneline ch3-history -- ch3/HYPOTHESES.md` and
   `git log --oneline ch3-closeout-history -- ch3/HYPOTHESES.md`. When a prediction was wrong,
