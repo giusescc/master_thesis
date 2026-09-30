@@ -109,10 +109,10 @@ Totals across 62 checks: 39 ENFORCED, 17 NOT-SUPPORTED, 6 DECLARED-ONLY,
   (tag `ch3-closeout-history`). After
   `git fetch --tags`, run
   `git log --oneline ch3-history -- ch3/HYPOTHESES.md` and
-  `git log --oneline ch3-closeout-history -- ch3/HYPOTHESES.md`. When a prediction was wrong,
-  the prediction stays as written and the correction is recorded: one in
-  Chapter 2 (`401`, not `404`), and in Chapter 3 H4.2 was wrong and H3.7
-  partly wrong.
+  `git log --oneline ch3-closeout-history -- ch3/HYPOTHESES.md`. When a
+  prediction was wrong, the prediction stays as written and the correction
+  is recorded: one in Chapter 2 (`401`, not `404`), and in Chapter 3 H4.2
+  was wrong and H3.7 partly wrong.
 - **Repetitions.** In Chapter 2, every check declares its expected outcome and
   the test suite re-verifies it, and the definition of done in `CLAUDE.md`
   requires every experiment to run twice in a row with identical results.
