@@ -32,3 +32,16 @@ export/
 ch3/.state/
 ch3/results/scratch/
 ch3/phases/p4_comunica/node_modules/
+
+# Agent worktrees and orchestration state (contain their own .env files)
+.claude/
+.general/
+
+# Secrets: any .env variant except the committed template, keys
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Ollama model store, should one ever be placed inside the repo
+.ollama/
