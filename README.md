@@ -99,7 +99,12 @@ Totals across 62 checks: 39 ENFORCED, 17 NOT-SUPPORTED, 6 DECLARED-ONLY,
   code that tests it ran. Chapter 2 has a `Hypotheses for NN_... (pre-run)`
   commit before each `Results for NN_...` commit. Chapter 3 commits each
   phase's section of [`ch3/HYPOTHESES.md`](ch3/HYPOTHESES.md) in its own
-  commit, before that phase's first counted run. When a prediction was wrong,
+  commit, before that phase's first counted run. Chapter 3 was
+  squash-merged into `main`, so those per-phase
+  `Hypotheses for Chapter 3 Pn … (pre-run)` commits are in the commit lists
+  of [PR #4](https://github.com/giusescc/master_thesis/pull/4/commits) and
+  [PR #5](https://github.com/giusescc/master_thesis/pull/5/commits) (the P7
+  notice v2 predictions), not in `main`'s history. When a prediction was wrong,
   the prediction stays as written and the correction is recorded: one in
   Chapter 2 (`401`, not `404`), and in Chapter 3 H4.2 was wrong and H3.7
   partly wrong.
