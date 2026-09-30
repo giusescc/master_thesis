@@ -35,7 +35,8 @@ language; do not assume familiarity.
    with an empty body to automated requests. When it cannot be fetched, use a
    reference plus a **labelled paraphrase** and note the retrieval failure.
 7. **Secrets and state never get committed**: `.env`, `data/`, `data2/`,
-   `webid/`, `logs/`. The repo is **private**.
+   `webid/`, `logs/`, `ch3/.state/`. The repo is **public** on GitHub:
+   anything committed, and every PR description and comment, is published.
 8. **Never touch anything outside this project folder.**
 9. **If blocked, stop and ask.** Do not work around a problem silently. Asking
    is cheaper than guessing.
